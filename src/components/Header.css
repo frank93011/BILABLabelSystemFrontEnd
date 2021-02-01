@@ -1,0 +1,31 @@
+#Header {
+  height: 90px;
+  /* background-color: yellow; */
+}
+.header-logo-container {
+  height: 100%;
+  width: 30%;
+  color: #707070;
+  padding-left: 15%;
+}
+.header-logo {
+  height: 70px;
+}
+.header-router-container {
+  height: 100%;
+  width: 70%;
+  padding-right: 15%;
+}
+.header-router-button {
+  height: 65px;
+  width: 100px;
+  /* background-color: #6184C63C; */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #6184C6;
+  border-radius: 17px;
+  margin: 0 5px;
+}

@@ -1,0 +1,37 @@
+.justify-around {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  /* background-color: rgb(42, 50, 165); */
+}
+.justify-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  /* background-color: rgb(42, 165, 48); */
+}
+.justify-end {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  /* background-color: brown; */
+}
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+/* f stands for font-size */
+.f-25 { font-size: 25px; }
+.f-20 { font-size: 20px; }
+
+/* pl stands for padding-left */
+.pl-12 { padding-left: 12px; }
+
+/* mb stands for margin-right */
+.mb-5 { margin-bottom: 5px; }
+
+/* w stands for width */
+.w-120 { width: 120px !important; }
