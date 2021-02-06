@@ -1,0 +1,48 @@
+#Paragraphs {
+  padding: 0 14%;
+  padding-top: 90px;
+  z-index: 20;
+  color: #6F6F6F;
+}
+
+.paragraph-title-container {
+  color: #6184C6;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.line {
+  width: 5px;
+  height: 40px;
+  background-color: #6184C6;
+  margin-right: 20px;
+}
+
+.paragraph-card-container, .paragraph-card-container:hover {
+  background-color: white;
+  width: 250px;
+  height: 220px;
+  padding: 30px;
+  margin: 0 17px 40px 17px;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.paragraph-card-container:hover {
+  box-shadow: 10px 10px 10px #00000029;
+  cursor: pointer;
+}
+
+.paragraph-counter {
+  background-color: #4D87EB;
+  width: 45px;
+  height: 45px;
+  box-shadow: 0px 3px 6px #00000029;
+  border-radius: 7px;
+  color: white;
+}
+
+.paragraph-is-labeled, .paragraph-is-labeled:hover {
+  box-shadow: 0px 1px 2px #00000029;
+  opacity: 0.7;
+  color: grey;
+}

@@ -3,6 +3,7 @@ import '../components/_global.css'
 import Header from '../components/Header'
 import LabelTitles from './LabelTitles'
 import Validation from './ValidationTitles'
+import Paragraphs from './Paragraphs'
 import React, { useState, useEffect } from 'react';
 import { fakeMRCTitles, fakeSentimentalTitles } from './fakeData'
 import {
@@ -23,12 +24,16 @@ function LabelingPage(props) {
   }, [props.type]);
   
   let { path, url } = useRouteMatch();
+  
   console.log('path', path)
   console.log('url', url)
   return (
     <div id="LabelingPage">
       <Header />
       <Switch>
+        <Route path={`${path}/Label/:articleTitle`}>
+          <Paragraphs />
+        </Route>
         <Route path={`${path}/Label`}>
           <LabelTitles titles={titles} />
         </Route>

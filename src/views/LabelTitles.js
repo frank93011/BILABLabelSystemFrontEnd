@@ -1,19 +1,16 @@
 import './LabelTitles.css'
 import Card from '../components/Card'
-import {
-  Switch,
-  Route,
-  useRouteMatch,
-  Redirect,
-  Link
-} from "react-router-dom";
+import { useRouteMatch,Link } from "react-router-dom";
 
 function LabelTitles(props) {
+  let { path } = useRouteMatch();
   return (
     <div className="labeling-content-container">
       <div className="start-start flex-wrap">
         {props.titles.map((title, idx) => (
-          <Card key={idx} title={title} />
+          <Link to={`${path}/${title}`}>
+            <Card key={idx} title={title} />
+          </Link>
         ))}
       </div>
     </div>
