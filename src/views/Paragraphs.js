@@ -12,7 +12,7 @@ function Paragraphs() {
     <div id="Paragraphs" className="center-center">
       <div className="paragraph-title-container justify-start f-20">
         <div className="line"></div>
-        <div>{articleTitle}</div>
+        <div className="center-center mb-3">{articleTitle}</div>
       </div>
       <div className="start-start flex-wrap">
         {paragraphs.map((paragraph, idx) => (

@@ -6,7 +6,7 @@
 }
 
 .paragraph-title-container {
-  color: #6184C6;
+  color: #585858;
   width: 100%;
   margin-bottom: 20px;
 }
@@ -14,16 +14,16 @@
 .line {
   width: 5px;
   height: 40px;
-  background-color: #6184C6;
+  background-color: #1FDCA8;
   margin-right: 20px;
 }
 
 .paragraph-card-container, .paragraph-card-container:hover {
   background-color: white;
   width: 250px;
-  height: 220px;
+  height: 225px;
   padding: 30px;
-  margin: 0 17px 40px 17px;
+  margin: 0 17px 35px 17px;
   box-shadow: 0px 3px 6px #00000029;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .paragraph-counter {
-  background-color: #4D87EB;
+  background-color: #6184C6;
   width: 45px;
   height: 45px;
   box-shadow: 0px 3px 6px #00000029;
