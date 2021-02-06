@@ -30,7 +30,7 @@ function Paragraphs() {
           }>
           <div className="paragraph-counter center-center mb-20">0</div>
           <div className="paragraph-content">
-            至於運動的類型，現在普遍建議複雜一點的比較好。多年前，有項刊登在新英格蘭醫學期刊的研究分析，
+            【這篇是示範點過的】普遍建議複雜一點的比較好。多年前，有項刊登在新英格蘭醫學期刊的研究分析，
             在各種不同類別的運動當中，跳舞是失智症風險最低的絕佳運動選擇，因為跳舞...
           </div>
         </div>
