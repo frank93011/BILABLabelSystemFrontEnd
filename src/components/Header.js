@@ -1,13 +1,14 @@
-import './_Global.css';
+import './_global.css';
 import './Header.css';
 import lab_labeler_logo from '../assets/label_lab_logo.png';
+import EntryMenu from '../components/EntryMenu';
 
 function Header() {
   return (
     <div id="Header" className="justify-around">
       <div className="justify-start header-logo-container">
         <img className="header-logo" src={lab_labeler_logo} alt="" />
-        <div className="font-poppins f-25">BI Lab</div>
+        <EntryMenu />
       </div>
       <div className="justify-end header-router-container">
         <div className="header-router-button">標記</div>

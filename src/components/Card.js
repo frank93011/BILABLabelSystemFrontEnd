@@ -1,8 +1,10 @@
 import './Card.css';
 
-function Card() {
+function Card(props) {
   return (
-    <div>Card</div>
+    <div className="card">
+      {props.title}
+    </div>
   )
 }
 

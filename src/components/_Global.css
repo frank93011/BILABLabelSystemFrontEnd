@@ -19,6 +19,24 @@
   align-items: center;
   /* background-color: brown; */
 }
+.start-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.center-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+} 
+
 .font-poppins {
   font-family: 'Poppins', sans-serif;
 }
