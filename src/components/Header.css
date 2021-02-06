@@ -18,6 +18,9 @@
   width: 50%;
   padding-right: 5%;
 }
+a {
+  text-decoration: none;
+}
 .header-router-button, .header-router-button:hover {
   height: 55px;
   width: 100px;

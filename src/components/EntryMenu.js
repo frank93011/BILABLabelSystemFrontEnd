@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 
 import { routes } from '../config';
 
@@ -28,7 +28,7 @@ const useStyles = makeStyles(() => ({
   },
   link: {
     textDecoration: 'none',
-    color: '#6184C6'
+    color: '#6184C6',
   }
 }));
 
@@ -37,6 +37,11 @@ export default function EntryMenu() {
   const [open, setOpen] = React.useState(false);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const anchorRef = React.useRef(null);
+  const [taskTypeTitle, setTaskTypeTitle] = React.useState(routes.options[0].title)
+  React.useEffect(() => {
+    const task = routes.options.filter(option => option.type === url.replace('/', ''))
+    setTaskTypeTitle(task[0].title)
+  })
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -73,6 +78,8 @@ export default function EntryMenu() {
     prevOpen.current = open;
   }, [open]);
 
+  let { url } = useRouteMatch();
+
   return (
     <div className={classes.root}>
       <div>
@@ -83,7 +90,7 @@ export default function EntryMenu() {
           onClick={handleToggle}
           className={classes.button}
         >
-          {routes.options[selectedIndex].title}
+          {taskTypeTitle}
           <ArrowDropDownIcon />
         </Button>
         <Popper open={open} placement='bottom-start' anchorEl={anchorRef.current} role={undefined} transition disablePortal>
@@ -95,13 +102,13 @@ export default function EntryMenu() {
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   {routes.options.map((option, index) => (
+                    <Link className={classes.link} to={`/${option.type}`}> 
                       <MenuItem
                         key={index} 
                         onClick={(event) => handleMenuItemClick(event, index)}>
-                          <Link className={classes.link} to={`/${option.type}`}>
-                            {option.title}
-                          </Link>
+                        {option.title}
                       </MenuItem>
+                    </Link>
                   ))}
                   </MenuList>
                 </ClickAwayListener>
