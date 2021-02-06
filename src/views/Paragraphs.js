@@ -10,7 +10,6 @@ function Paragraphs() {
   let isLabeled = true;
   return (
     <div id="Paragraphs" className="center-center">
-      {/* {`ArticleId = ${articleId}, paragraphs are shown below`} */}
       <div className="paragraph-title-container justify-start f-20">
         <div className="line"></div>
         <div>{articleTitle}</div>
