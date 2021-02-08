@@ -1,8 +1,8 @@
+#MainContent {
+  /* position: relative; */
+}
+
 .labeling-content-container {
   padding: 0 14%;
   padding-top: 90px;
-}
-.label-link {
-  text-decoration: none;
-  color: #555555;
 }

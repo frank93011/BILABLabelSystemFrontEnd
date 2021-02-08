@@ -33,15 +33,17 @@ const useStyles = makeStyles(() => ({
 }));
 
 export default function EntryMenu() {
+  let { url } = useRouteMatch();
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  // const [selectedIndex, setSelectedIndex] = React.useState(0);
   const anchorRef = React.useRef(null);
   const [taskTypeTitle, setTaskTypeTitle] = React.useState(routes.options[0].title)
   React.useEffect(() => {
     const task = routes.options.filter(option => option.type === url.replace('/', ''))
     setTaskTypeTitle(task[0].title)
-  })
+  }, [url])
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -56,7 +58,7 @@ export default function EntryMenu() {
   };
 
   const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
+    // setSelectedIndex(index);
     // setAnchorEl(null);
     handleClose(event);
   };
@@ -77,8 +79,6 @@ export default function EntryMenu() {
 
     prevOpen.current = open;
   }, [open]);
-
-  let { url } = useRouteMatch();
 
   return (
     <div className={classes.root}>

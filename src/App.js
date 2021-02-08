@@ -1,5 +1,5 @@
 import './App.css';
-import LabelingPage from './views/LabelingPage'
+import MainContentPage from './views/MainContentPage'
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,8 +12,8 @@ function App() {
     <Router>
       <div className="App">
         <Switch>
-          <Route path="/MRC" component={LabelingPage} />
-          <Route path="/Sentimental" render={() => <LabelingPage type="Sentimental" />} />
+          <Route path="/MRC" component={MainContentPage} />
+          <Route path="/Sentimental" render={() => <MainContentPage type="Sentimental" />} />
           <Redirect from="/" to="/MRC" />
         </Switch>
       </div>   
