@@ -1,5 +1,7 @@
 # Before Started
 
+## Most important
+Please create your own branch for your features. If you need to merge your branch to master, please create a new pull request (PR) and contact to other members.
 ## Components
 1. Smaller elements can be created to be a component, while bigger ones would be views.
 ## Views
