@@ -17,9 +17,9 @@
 1. `ValidationPage.js` and `ValidationPage.css` in `views` folder is only for designing router and testing for the correctness of routers, so they can be removed when ValidationPages are finished within `Labeling.js`, `ParagraphCards.js`, and `TitleCards.js`.
 2. `EntryMenu.js` is mostly copied from [material-UI](https://material-ui.com), coding style haven't been modified my own style. If needed, please DO NOT follow coding style of this file.
 
-# Run This repo
+## Run This repo
 1. Please make sure that you have node.js (version should be higher than 14.8.0) on your computer.
 2. run simply with the following command in your terminal:
-  1. `npm install`
-  2. `npm start`
+    * `npm install`
+    * `npm start`
 
