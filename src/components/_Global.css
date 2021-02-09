@@ -5,6 +5,13 @@
   align-items: center;
   /* background-color: rgb(42, 50, 165); */
 }
+.justify-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  /* background-color: rgb(42, 50, 165); */
+}
 .justify-start {
   display: flex;
   flex-direction: row;
@@ -53,6 +60,15 @@
   font-family: 'Poppins', sans-serif;
 }
 
+.overflow-scroll {
+  display: block;
+  overflow: scroll;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
 /* f stands for font-size */
 .f-25 { font-size: 25px; }
 .f-20 { font-size: 20px; }
@@ -66,6 +82,9 @@
 .mb-10 { margin-bottom: 10px; }
 .mb-15 { margin-bottom: 15px; }
 .mb-20 { margin-bottom: 20px; }
+.mb-30 { margin-bottom: 30px; }
+
+.mr-10 { margin-right: 10px; }
 
 /* w stands for width */
 .w-120 { width: 120px !important; }

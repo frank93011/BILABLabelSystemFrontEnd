@@ -31,6 +31,11 @@
   cursor: pointer;
 }
 
+.paragraph-link {
+  text-decoration: none;
+  color: #555555;
+}
+
 .paragraph-counter {
   background-color: #6184C6;
   width: 45px;

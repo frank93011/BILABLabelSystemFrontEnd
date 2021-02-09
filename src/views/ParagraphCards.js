@@ -16,10 +16,10 @@ function ParagraphCards() {
       </div>
       <div className="start-start flex-wrap">
         {paragraphs.map((paragraph, idx) => (
-          <Link to={`${url}/${idx}`}>
+          <Link className="paragraph-link" to={`${url}/${idx}`}>
             <div key={idx} className="paragraph-card-container center-center f-16">
               <div className="paragraph-counter center-center mb-20">0</div>
-              <div className="paragraph-content">
+              <div>
                 {paragraph}
               </div>
             </div>
