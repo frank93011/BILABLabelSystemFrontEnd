@@ -7,7 +7,7 @@ function TitleCards(props) {
     <div className="title-card-container">
       <div className="start-start flex-wrap">
         {props.titles.map((title, idx) => (
-          <Link className="title-card-link" to={`${path}/${title}`}>
+          <Link key={idx} className="title-card-link" to={`${path}/${title}`}>
             <div className="title-card">
               {title}
             </div>
