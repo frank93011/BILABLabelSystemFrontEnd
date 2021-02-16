@@ -1,0 +1,90 @@
+.justify-around {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  /* background-color: rgb(42, 50, 165); */
+}
+.justify-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  /* background-color: rgb(42, 50, 165); */
+}
+.justify-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  /* background-color: rgb(42, 165, 48); */
+}
+.justify-end {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  /* background-color: brown; */
+}
+.start-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.center-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+.center-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.align-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+} 
+
+.font-poppins {
+  font-family: 'Poppins', sans-serif;
+}
+
+.overflow-scroll {
+  display: block;
+  overflow: scroll;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* f stands for font-size */
+.f-25 { font-size: 25px; }
+.f-20 { font-size: 20px; }
+
+/* pl stands for padding-left */
+.pl-12 { padding-left: 12px; }
+
+/* mb stands for margin-right */
+.mb-3 { margin-bottom: 3px; }
+.mb-5 { margin-bottom: 5px; }
+.mb-10 { margin-bottom: 10px; }
+.mb-15 { margin-bottom: 15px; }
+.mb-20 { margin-bottom: 20px; }
+.mb-30 { margin-bottom: 30px; }
+
+.mr-10 { margin-right: 10px; }
+
+/* w stands for width */
+.w-120 { width: 120px !important; }
