@@ -1,14 +1,42 @@
 import './Labeling.css'
 import { fakeQuestionsHistory } from './fakeData'
+import React from 'react';
 
 function Labeling() {
-  const fakeQuestions = fakeQuestionsHistory
+  const [answer, setAnswer] = React.useState("");
+  const [startIndex, setStartIndex] = React.useState(0);
+  const fakeQuestions = fakeQuestionsHistory;
+
+  // subscribe to selection event
+  const mouseUpHandler = event => {
+    event.stopPropagation();
+    var selObj = window.getSelection();
+    setAnswer(selObj.toString());
+    var selRange = selObj.getRangeAt(0);
+    setStartIndex(selRange.startOffset);
+  };
+
+  // textarea change event
+  const handleTextAreaChange = event => {
+    console.log(event)
+    setAnswer(event.target.value);
+  }
+
+  // handle selection answers
+  const handleAnswerSubmit = () => {
+      let args = {
+        answerString: answer,
+        answerStart: startIndex,
+      };
+      console.log(args);
+    }
+
   return (
     <div id="Labeling" className="justify-center">
       <div className="working-area-container overflow-scroll">
         <div className="back-button">〈 回上一層</div>
         <div className="working-article-title body-padding">80歲最帥大爺、70歲時尚超模都不約而同地做到</div>
-        <div className="working-article-content body-padding">健康老化有不少成功範例，例如被稱為「最帥大爺」的王德順，出生於1936年，
+        <div className="working-article-content body-padding" onMouseUp={mouseUpHandler}>健康老化有不少成功範例，例如被稱為「最帥大爺」的王德順，出生於1936年，
           理應是一位八旬長者，但他完全顛覆傳統對於八旬老翁的形象，有個性的白髮與歷經風霜的堅毅表情，
           還有讓許多中年男子羨慕的好身材——精壯的身形與肌肉，這是他自五十歲開始持續的健身成果。
           並不是每個人都必須仿效他的生活，而是他完全顛覆一個八十歲長者的生活樣貌，
@@ -19,8 +47,11 @@ function Labeling() {
         </div>
         <div className="justify-start body-padding">
           <div className="nowrap mr-10">答案：</div>
-          <textarea className="working-textarea" />
-          <div className="label-button justify-center nowrap">標記<br/>答案</div>
+          <textarea 
+          className="working-textarea" 
+          value={answer}
+          onChange={handleTextAreaChange}/>
+          <div className="label-button justify-center nowrap" onClick={handleAnswerSubmit}>標記<br/>答案</div>
         </div>
       </div>
       <div className="question-history-container align-start">
