@@ -6,6 +6,8 @@ import ParagraphCards from './ParagraphCards'
 import Labeling from './Labeling'
 import Validation from './ValidationPage' // temp
 import React, { useState, useEffect } from 'react';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 import { fakeMRCTitles, fakeSentimentalTitles } from './fakeData'
 import {
   Switch,
@@ -13,21 +15,51 @@ import {
   useRouteMatch,
   Redirect
 } from "react-router-dom";
+import {BASEURL} from "../config";
+import axios from "axios";
 
 function MainContent(props) {
-  const [titles, setTitles] = useState(fakeMRCTitles);
-  useEffect(() => {
-    if (!props.type || props.type === "MRC") {
-      setTitles(fakeMRCTitles)
-    } else {
-      setTitles(fakeSentimentalTitles)
-    }
-  }, [props.type]);
-  
   let { path, url } = useRouteMatch();
+  const [articles, setArticles] = useState();
   
   console.log('path', path)
   console.log('url', url)
+
+  useEffect(() => {
+    if (!props.type || props.type === "MRC") {
+      getArticles();
+    } else {
+      setArticles(fakeSentimentalTitles)
+    }
+  }, [props.type]);
+  
+  // call article api 
+  const getArticles = async() => {
+    let actionURL = BASEURL + '/articles'
+    let arg = {
+      "userId": "0",
+    }
+    await axios.post(actionURL, arg).then(
+      function(response) {
+        // console.log(response.data);
+        setArticles(response.data);
+      }
+    )
+  }
+
+  // When api not get responding
+  if(!articles || !articles.length) {
+    return (
+      <Loader
+        className="center"
+        type="RevolvingDot"
+        color="#4D87EB"
+        height={100}
+        width={100}
+        timeout={3000} //3 secs
+      />
+    );
+  }
   return (
     <div id="MainContent">
       <Header />
@@ -39,7 +71,7 @@ function MainContent(props) {
           <ParagraphCards />
         </Route>
         <Route path={`${path}/Label`}>
-          <TitleCards titles={titles} />
+          <TitleCards articles={articles} />
         </Route>
         <Route path={`${path}/Validation`} component={Validation} />
         <Redirect from={path} to={`${path}/Label`} />
