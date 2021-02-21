@@ -102,3 +102,65 @@ export const fakeQuestionsHistory = [
     answer: '85歲'
   },
 ]
+
+export const fakeSentimentHistory = [
+  {
+    majorAspect:'服務',
+    minorAspect:[
+      {
+        minorAspect:'表情',
+        sentiment:[
+          '歷經風霜 [+]',
+          '堅毅 [+]',
+          'just monika [-]'
+        ]
+      },
+      {
+        minorAspect:'just monika',
+        sentiment:[
+          'just monika[-]'
+        ]
+      },
+      
+    ]
+  },
+  {
+    majorAspect:'態度',
+    minorAspect:[
+      {
+        minorAspect:'表情',
+        sentiment:[
+          '歷經風霜 [-]',
+          '堅毅 [-]',
+          'just monika [-]'
+        ]
+      },
+      {
+        minorAspect:'just monika',
+        sentiment:[
+          'just monika [-]'
+        ]
+      },
+      
+    ]
+  },
+  {
+    majorAspect:'服務',
+    minorAspect:[
+    ]
+  },
+  {
+    majorAspect:'設備',
+    minorAspect:[]
+  }
+]
+
+export const fakeAspectPool = [
+  {id:0, majorAspect:'服務'},
+  {id:1, majorAspect:'器材'},
+  {id:2, majorAspect:'風景'},
+  {id:3, majorAspect:'周遭環境'},
+  {id:4, majorAspect:'用戶評價'},
+  {id:5, majorAspect:'外觀'},
+  
+]
