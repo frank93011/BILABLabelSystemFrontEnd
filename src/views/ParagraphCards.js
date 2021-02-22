@@ -1,5 +1,5 @@
 import './ParagraphCards.css'
-import { Link, useParams, useRouteMatch } from "react-router-dom";
+import { useParams, useRouteMatch, useHistory } from "react-router-dom";
 import { useEffect, useState} from 'react';
 import { BASEURL } from "../config";
 import axios from "axios";
@@ -7,15 +7,15 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
 function ParagraphCards() {
+  let history = useHistory();
   let { url } = useRouteMatch();
   let { articleId } = useParams();
-  // let paragraphs = fakeParagraphs;
   const [articleTitle, setArticleTitle] = useState();
   const [paragraphs, setParagraphs] = useState();
   let isLabeled = true;
 
   useEffect(() => {
-    const getSetParagraphs = async() => {
+    const getSetParagraphs = async () => {
       let actionURL = BASEURL + '/tasks'
       let arg = {
         "userId": "0",
@@ -23,8 +23,10 @@ function ParagraphCards() {
         "articleId": articleId
       }
       const response = await axios.post(actionURL, arg)
+      // console.log('res', response)
       setParagraphs(response.data.taskList);
       setArticleTitle(response.data.articleTitle);
+      // setqaList(response.data.qaList)
     }
     getSetParagraphs();
   }, [articleId])
@@ -43,6 +45,17 @@ function ParagraphCards() {
     );
   }
 
+  const goToLabel = (idx) => {
+    history.push(`${url}/${idx}`);
+    const data = {
+      articleId: articleId,
+      articleTitle: articleTitle,
+      taskId: paragraphs[idx].taskId,
+      // paragraph: paragraphs[idx]
+    }
+    sessionStorage.setItem("paragraph", JSON.stringify(data));
+  }
+
   return (
     <div id="Paragraphs" className="center-center">
       <div className="paragraph-title-container justify-start f-20">
@@ -51,7 +64,7 @@ function ParagraphCards() {
       </div>
       <div className="start-start flex-wrap">
         {paragraphs.map((paragraph, idx) => (
-          <Link key={idx} className="paragraph-link" to={`${url}/${idx}`}>
+          <div key={idx} className="paragraph-link" onClick={() => { goToLabel(idx) }}>
             <div key={idx} className={
               `paragraph-card-container center-center f-16 
                 ${paragraph.isAnswered ? "paragraph-is-labeled" : "" }`
@@ -61,7 +74,7 @@ function ParagraphCards() {
                 {paragraph.context}
               </div>
             </div>
-          </Link>
+          </div>
         ))}
         <div 
           className={

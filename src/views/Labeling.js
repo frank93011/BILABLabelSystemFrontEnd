@@ -1,20 +1,39 @@
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import './Labeling.css'
-import { fakeQuestionsHistory } from './fakeData'
 import { useEffect, useState } from 'react';
+import { BASEURL } from "../config";
+import axios from 'axios';
 
 function Labeling() {
   let history = useHistory();
   let { params } = useRouteMatch();
-  let {articleId, paragraph} = params;
+  let { articleId, paragraph } = params;
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [startIndex, setStartIndex] = useState(0);
   const [isFixedAnswer, setIsFixedAnswer] = useState(false);
   const [labelButtonCss, setLabelButtonCss] = useState("label-button justify-center nowrap");
   const [buttonString, setButtonString] = useState("標記答案");
+  const taskInfo = JSON.parse(sessionStorage.getItem('paragraph'));
+  const [task, setTask] = useState();
+  const [qaPairs, setQaPairs] = useState();
+
+  useEffect(() => {
+    // [TODO]: Connect to getTaskApi
+    const getTask = async () => {
+      const arg = {
+        taskId: taskInfo.taskId,
+        userId: ""
+      }
+      const res = await axios.post(`${BASEURL}/getTask`, arg);
+      console.log('res', res);
+      setTask(res.data);
+      setQaPairs(res.data.qaList);
+    }
+    getTask();
+  }, [taskInfo.taskId])
+
   //[TODO]: change fake data
-  const fakeQuestions = fakeQuestionsHistory;
   const maxParagraph = 10;
 
   useEffect(() => {
@@ -82,12 +101,12 @@ function Labeling() {
     <div id="Labeling" className="justify-center">
       <div className="working-area-container overflow-scroll">
         <div className="back-button" onClick={() => history.push(`/MRC/Label/${articleId}`)}>〈 回上一層 </div>
-        <div className="working-article-title body-padding">80歲最帥大爺、70歲時尚超模都不約而同地做到</div>
-        <div className="working-article-content body-padding" onMouseUp={mouseUpHandler}>健康老化有不少成功範例，例如被稱為「最帥大爺」的王德順，出生於1936年，
-          理應是一位八旬長者，但他完全顛覆傳統對於八旬老翁的形象，有個性的白髮與歷經風霜的堅毅表情，
-          還有讓許多中年男子羨慕的好身材——精壯的身形與肌肉，這是他自五十歲開始持續的健身成果。
-          並不是每個人都必須仿效他的生活，而是他完全顛覆一個八十歲長者的生活樣貌，
-          他持續工作、享受生活、與妻子旅遊，實現真正不受年齡限制的人生。</div>
+        <div className="working-article-title body-padding">
+          {task ? task.taskTitle : ""}
+        </div>
+        <div className="working-article-content body-padding" onMouseUp={mouseUpHandler}>
+          {task ? task.context : ""}
+        </div>
         <div className="justify-start mb-30 body-padding">
           <div className="nowrap mr-10">問題：</div>
           <textarea className="working-textarea" value={question} onChange={handleTextAreaChange}/>
@@ -112,12 +131,12 @@ function Labeling() {
       <div className="question-history-container align-start">
         <div className="justify-center question-title">提問紀錄</div>
         <div className="overflow-scroll">
-          {fakeQuestions.map((fakeQuestion, idx) => (
+          {qaPairs ? qaPairs.map((qaPairs, idx) => (
             <div key={idx} className="mb-15">
-              <div className="mb-5">問：{fakeQuestion.question}</div>
-              <div>答：{fakeQuestion.answer}</div>
+              <div className="mb-5">問：{qaPairs.question}</div>
+              <div>答：{qaPairs.answer}</div>
             </div>
-          ))}
+          )) : ""}
         </div>
       </div>
     </div>
