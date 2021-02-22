@@ -6,3 +6,10 @@
   padding: 0 14%;
   padding-top: 90px;
 }
+
+.center{
+  position: absolute;
+  left: 50%; /* relative to nearest positioned ancestor or body element */
+  top: 50%; /*  relative to nearest positioned ancestor or body element */
+  
+}
