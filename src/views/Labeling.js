@@ -10,16 +10,27 @@ function Labeling() {
   const [question, setQuestion] = React.useState("");
   const [answer, setAnswer] = React.useState("");
   const [startIndex, setStartIndex] = React.useState(0);
-  const [isFixedAnswer, setIsFixedAnswer] = React.useState(true);
+  const [isFixedAnswer, setIsFixedAnswer] = React.useState(false);
   const [labelButtonCss, setLabelButtonCss] = React.useState("label-button justify-center nowrap");
   const [buttonString, setButtonString] = React.useState("標記答案");
   //[TODO]: change fake data
   const fakeQuestions = fakeQuestionsHistory;
   const maxParagraph = 10;
 
+  React.useEffect(() => {
+    if(isFixedAnswer){
+      setLabelButtonCss("label-button justify-center nowrap light-green")
+      setButtonString("重新標記")
+    }
+    else{
+      setLabelButtonCss("label-button justify-center nowrap")
+      setButtonString("標記答案")
+    }
+  }, [isFixedAnswer]);
+
   // subscribe to selection event
   const mouseUpHandler = event => {
-    if(!isFixedAnswer){
+    if(isFixedAnswer){
       return;
     }
     event.stopPropagation();
@@ -45,14 +56,6 @@ function Labeling() {
       }
 
       setIsFixedAnswer(!isFixedAnswer)
-      if(isFixedAnswer){
-        setLabelButtonCss("label-button justify-center nowrap light-green")
-        setButtonString("重新標記")
-      }
-      else{
-        setLabelButtonCss("label-button justify-center nowrap")
-        setButtonString("標記答案")
-      }
     }
   
   const handleNewQuestion = () => {
@@ -72,6 +75,7 @@ function Labeling() {
     setAnswer("");
     setStartIndex(0);
     setQuestion("");
+    setIsFixedAnswer(false);
   }
 
   return (
