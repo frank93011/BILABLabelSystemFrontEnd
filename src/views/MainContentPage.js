@@ -15,10 +15,7 @@ import {
 } from "react-router-dom";
 
 function MainContent(props) {
-  let { path, url } = useRouteMatch();
-  
-  console.log('path', path)
-  console.log('url', url)
+  let { path } = useRouteMatch();
 
   return (
     <div id="MainContent">

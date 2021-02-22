@@ -1,7 +1,7 @@
 import './ParagraphCards.css'
 import { Link, useParams, useRouteMatch } from "react-router-dom";
 import { useEffect, useState} from 'react';
-import {BASEURL} from "../config";
+import { BASEURL } from "../config";
 import axios from "axios";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";

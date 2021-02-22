@@ -1,16 +1,16 @@
 import './TitleCards.css'
 import { useRouteMatch,Link } from "react-router-dom";
-import React from 'react';
-import {BASEURL} from "../config";
+import { useEffect, useState } from 'react';
+import { BASEURL } from "../config";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import { fakeSentimentalTitles } from './fakeData'
 
 function TitleCards(props) {
   let { path } = useRouteMatch();
-  const [articles, setArticles] = React.useState();
+  const [articles, setArticles] = useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!props.type || props.type === "MRC") {
       getArticles();
     } else {

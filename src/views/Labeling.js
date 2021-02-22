@@ -1,23 +1,23 @@
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import './Labeling.css'
 import { fakeQuestionsHistory } from './fakeData'
-import React from 'react';
+import { useEffect, useState } from 'react';
 
 function Labeling() {
   let history = useHistory();
   let { params } = useRouteMatch();
   let {articleId, paragraph} = params;
-  const [question, setQuestion] = React.useState("");
-  const [answer, setAnswer] = React.useState("");
-  const [startIndex, setStartIndex] = React.useState(0);
-  const [isFixedAnswer, setIsFixedAnswer] = React.useState(false);
-  const [labelButtonCss, setLabelButtonCss] = React.useState("label-button justify-center nowrap");
-  const [buttonString, setButtonString] = React.useState("標記答案");
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [startIndex, setStartIndex] = useState(0);
+  const [isFixedAnswer, setIsFixedAnswer] = useState(false);
+  const [labelButtonCss, setLabelButtonCss] = useState("label-button justify-center nowrap");
+  const [buttonString, setButtonString] = useState("標記答案");
   //[TODO]: change fake data
   const fakeQuestions = fakeQuestionsHistory;
   const maxParagraph = 10;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if(isFixedAnswer){
       setLabelButtonCss("label-button justify-center nowrap light-green")
       setButtonString("重新標記")
