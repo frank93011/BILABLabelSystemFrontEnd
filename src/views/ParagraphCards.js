@@ -1,6 +1,5 @@
 import './ParagraphCards.css'
 import { Link, useParams, useRouteMatch } from "react-router-dom";
-import { fakeParagraphs } from '../views/fakeData';
 import { useEffect, useState} from 'react';
 import {BASEURL} from "../config";
 import axios from "axios";
@@ -57,7 +56,7 @@ function ParagraphCards() {
         {paragraphs.map((paragraph, idx) => (
           <Link className="paragraph-link" to={`${url}/${idx}`}>
             <div key={idx} className="paragraph-card-container center-center f-16">
-              <div className="paragraph-counter center-center mb-20">0</div>
+              <div className="paragraph-counter center-center mb-20">{paragraph.answered}</div>
               <div>
                 {paragraph.context}
               </div>
