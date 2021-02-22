@@ -22,13 +22,9 @@ function ParagraphCards() {
         "taskType": "MRC",
         "articleId": articleId
       }
-      await axios.post(actionURL, arg).then(
-        function(response) {
-          console.log(response)
-          setParagraphs(response.data.taskList);
-          setArticleTitle(response.data.articleTitle);
-        }
-      )
+      const response = await axios.post(actionURL, arg)
+      setParagraphs(response.data.taskList);
+      setArticleTitle(response.data.articleTitle);
     }
     getSetParagraphs();
   }, [articleId])

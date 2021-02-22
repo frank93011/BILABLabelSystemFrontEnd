@@ -23,12 +23,9 @@ function TitleCards(props) {
     let arg = {
       "userId": "0",
     }
-    await axios.post(actionURL, arg).then(
-      function(response) {
-        // console.log(response.data);
-        setArticles(response.data);
-      }
-    )
+    const response = await axios.post(actionURL, arg)
+    setArticles(response.data);
+
   }
 
   // When api not get responding
