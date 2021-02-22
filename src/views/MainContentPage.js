@@ -24,10 +24,10 @@ function MainContent(props) {
     <div id="MainContent">
       <Header />
       <Switch>
-        <Route path={`${path}/Label/:articleTitle/:paragraph`}>
+        <Route path={`${path}/Label/:articleId/:paragraph`}>
           <Labeling />
         </Route>
-        <Route path={`${path}/Label/:articleTitle`}>
+        <Route path={`${path}/Label/:articleId`}>
           <ParagraphCards />
         </Route>
         <Route path={`${path}/Label`}>

@@ -6,7 +6,7 @@ import React from 'react';
 function Labeling() {
   let history = useHistory();
   let { params } = useRouteMatch();
-  let {articleTitle, paragraph} = params;
+  let {articleId, paragraph} = params;
   const [question, setQuestion] = React.useState("");
   const [answer, setAnswer] = React.useState("");
   const [startIndex, setStartIndex] = React.useState(0);
@@ -81,7 +81,7 @@ function Labeling() {
   return (
     <div id="Labeling" className="justify-center">
       <div className="working-area-container overflow-scroll">
-        <div className="back-button" onClick={() => history.push(`/MRC/Label/${articleTitle}`)}>〈 回上一層 </div>
+        <div className="back-button" onClick={() => history.push(`/MRC/Label/${articleId}`)}>〈 回上一層 </div>
         <div className="working-article-title body-padding">80歲最帥大爺、70歲時尚超模都不約而同地做到</div>
         <div className="working-article-content body-padding" onMouseUp={mouseUpHandler}>健康老化有不少成功範例，例如被稱為「最帥大爺」的王德順，出生於1936年，
           理應是一位八旬長者，但他完全顛覆傳統對於八旬老翁的形象，有個性的白髮與歷經風霜的堅毅表情，
@@ -104,7 +104,7 @@ function Labeling() {
         <div className="justify-center">
           <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>
           {(paragraph <= maxParagraph) ? 
-            (<Link to={`/MRC/Label/${articleTitle}/${parseInt(paragraph)+1}`}>
+            (<Link to={`/MRC/Label/${articleId}/${parseInt(paragraph)+1}`}>
               <div className="function-button">下一段</div>
             </Link>):null}
       </div>
