@@ -19,7 +19,6 @@ function Labeling() {
   const [qaPairs, setQaPairs] = useState();
 
   useEffect(() => {
-    // [TODO]: Connect to getTaskApi
     const getTask = async () => {
       const arg = {
         taskId: taskInfo.taskId,
@@ -33,7 +32,6 @@ function Labeling() {
     getTask();
   }, [taskInfo.taskId])
 
-  //[TODO]: change fake data
   const maxParagraph = 10;
 
   useEffect(() => {
