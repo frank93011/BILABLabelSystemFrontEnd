@@ -1,17 +1,56 @@
 import './ParagraphCards.css'
 import { Link, useParams, useRouteMatch } from "react-router-dom";
 import { fakeParagraphs } from '../views/fakeData';
+import { useEffect, useState} from 'react';
+import {BASEURL} from "../config";
+import axios from "axios";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 function ParagraphCards() {
   let { url } = useRouteMatch();
   let { articleTitle } = useParams();
-  let paragraphs = fakeParagraphs;
-
+  // let paragraphs = fakeParagraphs;
+  const [paragraphs, setParagraphs] = useState();
   let isLabeled = true;
+
+  useEffect(() => {
+    getParagraphs();
+  }, [articleTitle])
+
+  const getParagraphs = async() => {
+    let actionURL = BASEURL + '/tasks'
+    let arg = {
+      "userId": "0",
+      "taskType": "MRC",
+      "articleId": "articleId2cc6edb8"
+    }
+    await axios.post(actionURL, arg).then(
+      function(response) {
+        console.log(response)
+        setParagraphs(response.data.taskList);
+      }
+    )
+  }
+
+  // When api not get responding
+  if(!paragraphs || !paragraphs.length) {
+    return (
+      <Loader
+        className="center"
+        type="RevolvingDot"
+        color="#4D87EB"
+        height={100}
+        width={100}
+        timeout={3000} //3 secs
+      />
+    );
+  }
+
   return (
     <div id="Paragraphs" className="center-center">
       <div className="paragraph-title-container justify-start f-20">
-        <div className="line"></div>
+        <div className="line"/>
         <div className="center-center mb-3">{articleTitle}</div>
       </div>
       <div className="start-start flex-wrap">
@@ -20,7 +59,7 @@ function ParagraphCards() {
             <div key={idx} className="paragraph-card-container center-center f-16">
               <div className="paragraph-counter center-center mb-20">0</div>
               <div>
-                {paragraph}
+                {paragraph.context}
               </div>
             </div>
           </Link>
