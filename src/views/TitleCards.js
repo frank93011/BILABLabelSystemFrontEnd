@@ -23,12 +23,9 @@ function TitleCards(props) {
     let arg = {
       "userId": "0",
     }
-    await axios.post(actionURL, arg).then(
-      function(response) {
-        // console.log(response.data);
-        setArticles(response.data);
-      }
-    )
+    const response = await axios.post(actionURL, arg)
+    setArticles(response.data);
+
   }
 
   // When api not get responding
@@ -49,7 +46,7 @@ function TitleCards(props) {
     <div className="title-card-container">
       <div className="start-start flex-wrap">
         {articles.map((article, idx) => (
-          <Link key={idx} className="title-card-link" to={`${path}/${article.articleTitle}`}>
+          <Link key={idx} className="title-card-link" to={`${path}/${article.articleId}`}>
             <div className="title-card">
               {article.articleTitle}
             </div>

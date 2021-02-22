@@ -8,29 +8,26 @@ import Loader from "react-loader-spinner";
 
 function ParagraphCards() {
   let { url } = useRouteMatch();
-  let { articleTitle } = useParams();
+  let { articleId } = useParams();
   // let paragraphs = fakeParagraphs;
+  const [articleTitle, setArticleTitle] = useState();
   const [paragraphs, setParagraphs] = useState();
   let isLabeled = true;
 
   useEffect(() => {
-    getParagraphs();
-  }, [articleTitle])
-
-  const getParagraphs = async() => {
-    let actionURL = BASEURL + '/tasks'
-    let arg = {
-      "userId": "0",
-      "taskType": "MRC",
-      "articleId": "articleId2cc6edb8"
-    }
-    await axios.post(actionURL, arg).then(
-      function(response) {
-        console.log(response)
-        setParagraphs(response.data.taskList);
+    const getSetParagraphs = async() => {
+      let actionURL = BASEURL + '/tasks'
+      let arg = {
+        "userId": "0",
+        "taskType": "MRC",
+        "articleId": articleId
       }
-    )
-  }
+      const response = await axios.post(actionURL, arg)
+      setParagraphs(response.data.taskList);
+      setArticleTitle(response.data.articleTitle);
+    }
+    getSetParagraphs();
+  }, [articleId])
 
   // When api not get responding
   if(!paragraphs || !paragraphs.length) {
@@ -55,7 +52,10 @@ function ParagraphCards() {
       <div className="start-start flex-wrap">
         {paragraphs.map((paragraph, idx) => (
           <Link className="paragraph-link" to={`${url}/${idx}`}>
-            <div key={idx} className="paragraph-card-container center-center f-16">
+            <div key={idx} className={
+              `paragraph-card-container center-center f-16 
+                ${paragraph.isAnswered ? "paragraph-is-labeled" : "" }`
+            }>
               <div className="paragraph-counter center-center mb-20">{paragraph.answered}</div>
               <div>
                 {paragraph.context}
