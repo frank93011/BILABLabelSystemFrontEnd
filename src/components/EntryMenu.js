@@ -102,7 +102,7 @@ export default function EntryMenu() {
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   {routes.options.map((option, index) => (
-                    <Link className={classes.link} to={`/${option.type}`}> 
+                    <Link key={index} className={classes.link} to={`/${option.type}`}> 
                       <MenuItem
                         key={index} 
                         onClick={(event) => handleMenuItemClick(event, index)}>

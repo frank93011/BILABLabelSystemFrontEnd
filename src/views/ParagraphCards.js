@@ -51,7 +51,7 @@ function ParagraphCards() {
       </div>
       <div className="start-start flex-wrap">
         {paragraphs.map((paragraph, idx) => (
-          <Link className="paragraph-link" to={`${url}/${idx}`}>
+          <Link key={idx} className="paragraph-link" to={`${url}/${idx}`}>
             <div key={idx} className={
               `paragraph-card-container center-center f-16 
                 ${paragraph.isAnswered ? "paragraph-is-labeled" : "" }`
