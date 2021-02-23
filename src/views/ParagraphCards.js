@@ -46,8 +46,6 @@ function ParagraphCards() {
   }
 
   const goToLabel = (idx) => {
-    console.log('idx', idx);
-    console.log('paara dta', paragraphs[idx])
     history.push(`${url}/${idx}`);
     const data = {
       articleId: articleId,

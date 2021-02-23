@@ -1,4 +1,4 @@
-import { Link, useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import './Labeling.css'
 import { useEffect, useState } from 'react';
 import { BASEURL } from "../config";
@@ -12,37 +12,39 @@ function Labeling() {
   const [answer, setAnswer] = useState("");
   const [startIndex, setStartIndex] = useState(0);
   const [isFixedAnswer, setIsFixedAnswer] = useState(false);
-  const [labelButtonCss, setLabelButtonCss] = useState("label-button justify-center nowrap");
-  const [buttonString, setButtonString] = useState("標記答案");
+  // const [labelButtonCss, setLabelButtonCss] = useState("label-button justify-center nowrap");
+  // const [buttonString, setButtonString] = useState("標記答案");
   const taskInfo = JSON.parse(sessionStorage.getItem('paragraph'));
   const [task, setTask] = useState();
   const [qaPairs, setQaPairs] = useState();
 
   useEffect(() => {
     const getTask = async () => {
-      console.log('taskid', taskInfo.taskId);
       const arg = {
-        taskId: taskInfo.taskId.toString(),
+        articleId: articleId,
+        taskId: taskId.toString(),
+        taskType: "MRC",
         userId: ""
       }
       const res = await axios.post(`${BASEURL}/getTask`, arg);
-      console.log('res', res);
+      console.log('labeling: getTask api', res);
       setTask(res.data);
-      setQaPairs(res.data.qaList);
+      const reversedQa = res.data.qaList.reverse()
+      setQaPairs(reversedQa);
     }
     getTask();
-  }, [taskInfo.taskId])
+  }, [articleId, taskInfo.taskId, taskId])
 
-  useEffect(() => {
-    if (isFixedAnswer) {
-      setLabelButtonCss("label-button justify-center nowrap light-green")
-      setButtonString("重新標記")
-    }
-    else {
-      setLabelButtonCss("label-button justify-center nowrap")
-      setButtonString("標記答案")
-    }
-  }, [isFixedAnswer]);
+  // useEffect(() => {
+  //   if (isFixedAnswer) {
+  //     setLabelButtonCss("label-button justify-center nowrap light-green")
+  //     setButtonString("重新標記")
+  //   }
+  //   else {
+  //     setLabelButtonCss("label-button justify-center nowrap")
+  //     setButtonString("標記答案")
+  //   }
+  // }, [isFixedAnswer]);
 
   // subscribe to selection event
   const mouseUpHandler = event => {
@@ -65,31 +67,31 @@ function Labeling() {
   }
 
   // handle selection answers fixed
-  const handleAnswerFixed = () => {
-    if (answer === "") {
-      alert("請以反白方式選擇內文再點選完成標註");
-      return
-    }
+  // const handleAnswerFixed = () => {
+  //   if (answer === "") {
+  //     alert("請以反白方式選擇內文再點選完成標註");
+  //     return
+  //   }
 
-    setIsFixedAnswer(!isFixedAnswer)
-  }
+  //   setIsFixedAnswer(!isFixedAnswer)
+  // }
 
   const saveAnswer = async () => {
     let newAnswer = {
       userId: "0",
-      taskId: taskInfo.taskId,
+      articleId: articleId,
+      taskId: taskInfo.taskId.toString(),
       taskType: 'MRC',
       isValiate: false,
       question: question,
       answer: answer
     }
     const res = await axios.post(`${BASEURL}/saveAnswer`, newAnswer)
-    console.log('res', res)
+    console.log('labeling: saveAnswer api', res)
   }
 
   const handleNewQuestion = () => {
-    if (question === "" || answer === "") {
-      alert("請輸入完整的問題與答案!")
+    if (!question || !answer) {
       return
     }
     //[TODO]: post data
@@ -101,19 +103,18 @@ function Labeling() {
     console.log(args);
 
     // re-init answers and questions
+    saveAnswer();
+    qaPairs.unshift({question: question, answer: answer})
+    setQaPairs(qaPairs)
     setAnswer("");
     setStartIndex(0);
     setQuestion("");
     setIsFixedAnswer(false);
-
-    saveAnswer();
   }
 
-  const goToNextTask = (paragraph) => {
-    console.log('max', taskInfo.totalTaskNum)
-    console.log('para', paragraph)
-    saveAnswer();
-    history.push(`/MRC/Label/${articleId}/${parseInt(paragraph) + 1}`);
+  const goToNextTask = () => {
+    handleNewQuestion()
+    history.push(`/MRC/Label/${articleId}/${parseInt(taskId) + 1}`);
   }
 
   return (
@@ -137,21 +138,22 @@ function Labeling() {
             value={answer}
             onChange={() => { return }}
             placeholder="請透過滑鼠反白方式選擇文章中的答案" />
-          <div className={labelButtonCss} onClick={handleAnswerFixed}>{buttonString}</div>
+          {/* <div className={labelButtonCss} onClick={handleAnswerFixed}>{buttonString}</div> */}
         </div>
         <div className="justify-center">
-          <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>
-          {(taskId <= taskInfo.totalTaskNum) ?
-            (<div onClick={() => goToNextTask()}>
+        {(question && answer) && 
+          <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>}
+          {(taskId <= taskInfo.totalTaskNum-1) &&
+            <div onClick={() => goToNextTask()}>
               <div className="function-button">下一段</div>
-            </div>) : null}
+            </div>}
         </div>
       </div>
       <div className="question-history-container align-start">
         <div className="justify-center question-title">提問紀錄</div>
         <div className="overflow-scroll">
-          {qaPairs ? qaPairs.map((qaPairs, idx) => (
-            <div key={idx} className="mb-15">
+          {qaPairs ? qaPairs.reverse().map((qaPairs, idx) => (
+            <div key={idx} className="historyCard mb-15">
               <div className="mb-5">問：{qaPairs.question}</div>
               <div>答：{qaPairs.answer}</div>
             </div>

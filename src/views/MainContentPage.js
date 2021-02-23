@@ -21,7 +21,7 @@ function MainContent(props) {
     <div id="MainContent">
       <Header />
       <Switch>
-        <Route path={`${path}/Label/:articleId/:paragraph`}>
+        <Route path={`${path}/Label/:articleId/:taskId`}>
           <Labeling />
         </Route>
         <Route path={`${path}/Label/:articleId`}>
