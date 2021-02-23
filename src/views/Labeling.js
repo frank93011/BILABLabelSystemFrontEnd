@@ -1,36 +1,54 @@
-import { Link, useRouteMatch, useHistory } from "react-router-dom";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import './Labeling.css'
-import { fakeQuestionsHistory } from './fakeData'
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { BASEURL } from "../config";
+import axios from 'axios';
 
 function Labeling() {
   let history = useHistory();
   let { params } = useRouteMatch();
-  let {articleId, paragraph} = params;
-  const [question, setQuestion] = React.useState("");
-  const [answer, setAnswer] = React.useState("");
-  const [startIndex, setStartIndex] = React.useState(0);
-  const [isFixedAnswer, setIsFixedAnswer] = React.useState(false);
-  const [labelButtonCss, setLabelButtonCss] = React.useState("label-button justify-center nowrap");
-  const [buttonString, setButtonString] = React.useState("標記答案");
-  //[TODO]: change fake data
-  const fakeQuestions = fakeQuestionsHistory;
-  const maxParagraph = 10;
+  let { articleId, taskId } = params;
+  const [question, setQuestion] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [startIndex, setStartIndex] = useState(0);
+  const [isFixedAnswer, setIsFixedAnswer] = useState(false);
+  // const [labelButtonCss, setLabelButtonCss] = useState("label-button justify-center nowrap");
+  // const [buttonString, setButtonString] = useState("標記答案");
+  const taskInfo = JSON.parse(sessionStorage.getItem('paragraph'));
+  const [task, setTask] = useState();
+  const [qaPairs, setQaPairs] = useState();
 
-  React.useEffect(() => {
-    if(isFixedAnswer){
-      setLabelButtonCss("label-button justify-center nowrap light-green")
-      setButtonString("重新標記")
+  useEffect(() => {
+    const getTask = async () => {
+      const arg = {
+        articleId: articleId,
+        taskId: taskId.toString(),
+        taskType: "MRC",
+        userId: ""
+      }
+      const res = await axios.post(`${BASEURL}/getTask`, arg);
+      console.log('labeling: getTask api', res);
+      setTask(res.data);
+      const reversedQa = res.data.qaList.reverse()
+      setQaPairs(reversedQa);
     }
-    else{
-      setLabelButtonCss("label-button justify-center nowrap")
-      setButtonString("標記答案")
-    }
-  }, [isFixedAnswer]);
+    getTask();
+  }, [articleId, taskInfo.taskId, taskId])
+
+  // useEffect(() => {
+  //   if (isFixedAnswer) {
+  //     setLabelButtonCss("label-button justify-center nowrap light-green")
+  //     setButtonString("重新標記")
+  //   }
+  //   else {
+  //     setLabelButtonCss("label-button justify-center nowrap")
+  //     setButtonString("標記答案")
+  //   }
+  // }, [isFixedAnswer]);
 
   // subscribe to selection event
   const mouseUpHandler = event => {
-    if(isFixedAnswer){
+    if (isFixedAnswer) {
       return;
     }
     event.stopPropagation();
@@ -49,18 +67,31 @@ function Labeling() {
   }
 
   // handle selection answers fixed
-  const handleAnswerFixed = () => {
-      if(answer === ""){
-        alert("請以反白方式選擇內文再點選完成標註");
-        return
-      }
+  // const handleAnswerFixed = () => {
+  //   if (answer === "") {
+  //     alert("請以反白方式選擇內文再點選完成標註");
+  //     return
+  //   }
 
-      setIsFixedAnswer(!isFixedAnswer)
+  //   setIsFixedAnswer(!isFixedAnswer)
+  // }
+
+  const saveAnswer = async () => {
+    let newAnswer = {
+      userId: "0",
+      articleId: articleId,
+      taskId: taskInfo.taskId.toString(),
+      taskType: 'MRC',
+      isValiate: false,
+      question: question,
+      answer: answer
     }
-  
+    const res = await axios.post(`${BASEURL}/saveAnswer`, newAnswer)
+    console.log('labeling: saveAnswer api', res)
+  }
+
   const handleNewQuestion = () => {
-    if(question === "" || answer === ""){
-      alert("請輸入完整的問題與答案!")
+    if (!question || !answer) {
       return
     }
     //[TODO]: post data
@@ -72,52 +103,61 @@ function Labeling() {
     console.log(args);
 
     // re-init answers and questions
+    saveAnswer();
+    qaPairs.unshift({question: question, answer: answer})
+    setQaPairs(qaPairs)
     setAnswer("");
     setStartIndex(0);
     setQuestion("");
     setIsFixedAnswer(false);
   }
 
+  const goToNextTask = () => {
+    handleNewQuestion()
+    history.push(`/MRC/Label/${articleId}/${parseInt(taskId) + 1}`);
+  }
+
   return (
     <div id="Labeling" className="justify-center">
       <div className="working-area-container overflow-scroll">
         <div className="back-button" onClick={() => history.push(`/MRC/Label/${articleId}`)}>〈 回上一層 </div>
-        <div className="working-article-title body-padding">80歲最帥大爺、70歲時尚超模都不約而同地做到</div>
-        <div className="working-article-content body-padding" onMouseUp={mouseUpHandler}>健康老化有不少成功範例，例如被稱為「最帥大爺」的王德順，出生於1936年，
-          理應是一位八旬長者，但他完全顛覆傳統對於八旬老翁的形象，有個性的白髮與歷經風霜的堅毅表情，
-          還有讓許多中年男子羨慕的好身材——精壯的身形與肌肉，這是他自五十歲開始持續的健身成果。
-          並不是每個人都必須仿效他的生活，而是他完全顛覆一個八十歲長者的生活樣貌，
-          他持續工作、享受生活、與妻子旅遊，實現真正不受年齡限制的人生。</div>
+        <div className="working-article-title body-padding">
+          {task ? task.taskTitle : ""}
+        </div>
+        <div className="working-article-content body-padding" onMouseUp={mouseUpHandler}>
+          {task ? task.context : ""}
+        </div>
         <div className="justify-start mb-30 body-padding">
           <div className="nowrap mr-10">問題：</div>
-          <textarea className="working-textarea" value={question} onChange={handleTextAreaChange}/>
+          <textarea className="working-textarea" value={question} onChange={handleTextAreaChange} />
         </div>
         <div className="justify-start body-padding">
           <div className="nowrap mr-10">答案：</div>
-          <textarea 
-          className="working-textarea" 
-          value={answer}
-          onChange={()=>{return}}
-          placeholder="請透過滑鼠反白方式選擇文章中的答案"/>
-          <div className={labelButtonCss} onClick={handleAnswerFixed}>{buttonString}</div>
+          <textarea
+            className="working-textarea"
+            value={answer}
+            onChange={() => { return }}
+            placeholder="請透過滑鼠反白方式選擇文章中的答案" />
+          {/* <div className={labelButtonCss} onClick={handleAnswerFixed}>{buttonString}</div> */}
         </div>
         <div className="justify-center">
-          <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>
-          {(paragraph <= maxParagraph) ? 
-            (<Link to={`/MRC/Label/${articleId}/${parseInt(paragraph)+1}`}>
+        {(question && answer) && 
+          <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>}
+          {(taskId <= taskInfo.totalTaskNum-1) &&
+            <div onClick={() => goToNextTask()}>
               <div className="function-button">下一段</div>
-            </Link>):null}
-      </div>
+            </div>}
+        </div>
       </div>
       <div className="question-history-container align-start">
         <div className="justify-center question-title">提問紀錄</div>
-        <div className="overflow-scroll">
-          {fakeQuestions.map((fakeQuestion, idx) => (
-            <div key={idx} className="mb-15">
-              <div className="mb-5">問：{fakeQuestion.question}</div>
-              <div>答：{fakeQuestion.answer}</div>
+        <div className="overflow-scroll history-card-container">
+          {qaPairs ? qaPairs.reverse().map((qaPairs, idx) => (
+            <div key={idx} className="history-card mb-15">
+              <div className="mb-5">問：{qaPairs.question}</div>
+              <div>答：{qaPairs.answer}</div>
             </div>
-          ))}
+          )) : ""}
         </div>
       </div>
     </div>

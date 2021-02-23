@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -36,11 +36,11 @@ export default function EntryMenu() {
   let { url } = useRouteMatch();
 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  // const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const anchorRef = React.useRef(null);
-  const [taskTypeTitle, setTaskTypeTitle] = React.useState(routes.options[0].title)
-  React.useEffect(() => {
+  const [open, setOpen] = useState(false);
+  // const [selectedIndex, setSelectedIndex] = useState(0);
+  const anchorRef = useRef(null);
+  const [taskTypeTitle, setTaskTypeTitle] = useState(routes.options[0].title)
+  useEffect(() => {
     const task = routes.options.filter(option => option.type === url.replace('/', ''))
     setTaskTypeTitle(task[0].title)
   }, [url])
@@ -71,8 +71,8 @@ export default function EntryMenu() {
   }
 
   // return focus to the button when we transitioned from !open -> open
-  const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  const prevOpen = useRef(open);
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
@@ -102,7 +102,7 @@ export default function EntryMenu() {
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                   {routes.options.map((option, index) => (
-                    <Link className={classes.link} to={`/${option.type}`}> 
+                    <Link key={index} className={classes.link} to={`/${option.type}`}> 
                       <MenuItem
                         key={index} 
                         onClick={(event) => handleMenuItemClick(event, index)}>

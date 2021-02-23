@@ -18,6 +18,7 @@
 .question-history-container {
   background-color: white;
   width: 25vw;
+  position: relative;
   height: 77vh;
   margin-left: 20px;
   box-shadow: 0px 3px 6px #00000029;
@@ -50,11 +51,11 @@
 
 .working-textarea {
   width: 100%;
-  height: 30px;
+  height: 40px;
   border-radius: 10px;
   resize: none;
   font-size: 16px;
-  padding: 13px 20px;
+  padding: 8px 14px;
   outline: none;
   color: #555555;
   border: 1px solid #aaaaaa;
@@ -62,7 +63,7 @@
 
 .working-textarea::placeholder {
   opacity: 0.5;
-  font-weight: bold;
+  /* font-weight: bold; */
 }
 
 .label-button {
@@ -128,4 +129,15 @@
 
 .light-green {
   background-color: #1FDCA8;
+}
+
+.history-card-container {
+  width: 100%;
+}
+
+.history-card {
+  width: 100%;
+  border-bottom: 1px solid #d3d3d3;
+  padding: 0 5px;
+  padding-bottom: 15px;
 }

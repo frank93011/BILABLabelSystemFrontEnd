@@ -1,21 +1,21 @@
 import './ParagraphCards.css'
-import { Link, useParams, useRouteMatch } from "react-router-dom";
-import { useEffect, useState} from 'react';
-import {BASEURL} from "../config";
+import { useParams, useRouteMatch, useHistory } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { BASEURL } from "../config";
 import axios from "axios";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 
 function ParagraphCards() {
+  let history = useHistory();
   let { url } = useRouteMatch();
   let { articleId } = useParams();
-  // let paragraphs = fakeParagraphs;
   const [articleTitle, setArticleTitle] = useState();
   const [paragraphs, setParagraphs] = useState();
   let isLabeled = true;
 
   useEffect(() => {
-    const getSetParagraphs = async() => {
+    const getSetParagraphs = async () => {
       let actionURL = BASEURL + '/tasks'
       let arg = {
         "userId": "0",
@@ -23,14 +23,16 @@ function ParagraphCards() {
         "articleId": articleId
       }
       const response = await axios.post(actionURL, arg)
+      // console.log('res', response)
       setParagraphs(response.data.taskList);
       setArticleTitle(response.data.articleTitle);
+      // setqaList(response.data.qaList)
     }
     getSetParagraphs();
   }, [articleId])
 
   // When api not get responding
-  if(!paragraphs || !paragraphs.length) {
+  if (!paragraphs || !paragraphs.length) {
     return (
       <Loader
         className="center"
@@ -43,30 +45,42 @@ function ParagraphCards() {
     );
   }
 
+  const goToLabel = (idx) => {
+    history.push(`${url}/${idx}`);
+    const data = {
+      articleId: articleId,
+      articleTitle: articleTitle,
+      taskId: idx,
+      totalTaskNum: paragraphs.length,
+      // paragraph: paragraphs[idx]
+    }
+    sessionStorage.setItem("paragraph", JSON.stringify(data));
+  }
+
   return (
     <div id="Paragraphs" className="center-center">
       <div className="paragraph-title-container justify-start f-20">
-        <div className="line"/>
+        <div className="line" />
         <div className="center-center mb-3">{articleTitle}</div>
       </div>
       <div className="start-start flex-wrap">
         {paragraphs.map((paragraph, idx) => (
-          <Link className="paragraph-link" to={`${url}/${idx}`}>
+          <div key={idx} className="paragraph-link" onClick={() => { goToLabel(idx) }}>
             <div key={idx} className={
               `paragraph-card-container center-center f-16 
-                ${paragraph.isAnswered ? "paragraph-is-labeled" : "" }`
+                ${paragraph.isAnswered ? "paragraph-is-labeled" : ""}`
             }>
               <div className="paragraph-counter center-center mb-20">{paragraph.answered}</div>
               <div>
                 {paragraph.context}
               </div>
             </div>
-          </Link>
+          </div>
         ))}
-        <div 
+        <div
           className={
             `paragraph-card-container center-center f-16 
-              ${isLabeled ? "paragraph-is-labeled" : "" }`
+              ${isLabeled ? "paragraph-is-labeled" : ""}`
           }>
           <div className="paragraph-counter center-center mb-20">0</div>
           <div className="paragraph-content">

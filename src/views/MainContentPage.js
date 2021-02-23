@@ -15,16 +15,13 @@ import {
 } from "react-router-dom";
 
 function MainContent(props) {
-  let { path, url } = useRouteMatch();
-  
-  console.log('path', path)
-  console.log('url', url)
+  let { path } = useRouteMatch();
 
   return (
     <div id="MainContent">
       <Header />
       <Switch>
-        <Route path={`${path}/Label/:articleId/:paragraph`}>
+        <Route path={`${path}/Label/:articleId/:taskId`}>
           <Labeling />
         </Route>
         <Route path={`${path}/Label/:articleId`}>
