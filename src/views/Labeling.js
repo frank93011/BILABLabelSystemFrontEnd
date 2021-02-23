@@ -7,7 +7,7 @@ import axios from 'axios';
 function Labeling() {
   let history = useHistory();
   let { params } = useRouteMatch();
-  let { articleId, paragraph } = params;
+  let { articleId, taskId } = params;
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [startIndex, setStartIndex] = useState(0);
@@ -20,8 +20,9 @@ function Labeling() {
 
   useEffect(() => {
     const getTask = async () => {
+      console.log('taskid', taskInfo.taskId);
       const arg = {
-        taskId: taskInfo.taskId,
+        taskId: taskInfo.taskId.toString(),
         userId: ""
       }
       const res = await axios.post(`${BASEURL}/getTask`, arg);
@@ -32,14 +33,12 @@ function Labeling() {
     getTask();
   }, [taskInfo.taskId])
 
-  const maxParagraph = 10;
-
   useEffect(() => {
-    if(isFixedAnswer){
+    if (isFixedAnswer) {
       setLabelButtonCss("label-button justify-center nowrap light-green")
       setButtonString("重新標記")
     }
-    else{
+    else {
       setLabelButtonCss("label-button justify-center nowrap")
       setButtonString("標記答案")
     }
@@ -47,7 +46,7 @@ function Labeling() {
 
   // subscribe to selection event
   const mouseUpHandler = event => {
-    if(isFixedAnswer){
+    if (isFixedAnswer) {
       return;
     }
     event.stopPropagation();
@@ -67,16 +66,29 @@ function Labeling() {
 
   // handle selection answers fixed
   const handleAnswerFixed = () => {
-      if(answer === ""){
-        alert("請以反白方式選擇內文再點選完成標註");
-        return
-      }
-
-      setIsFixedAnswer(!isFixedAnswer)
+    if (answer === "") {
+      alert("請以反白方式選擇內文再點選完成標註");
+      return
     }
-  
+
+    setIsFixedAnswer(!isFixedAnswer)
+  }
+
+  const saveAnswer = async () => {
+    let newAnswer = {
+      userId: "0",
+      taskId: taskInfo.taskId,
+      taskType: 'MRC',
+      isValiate: false,
+      question: question,
+      answer: answer
+    }
+    const res = await axios.post(`${BASEURL}/saveAnswer`, newAnswer)
+    console.log('res', res)
+  }
+
   const handleNewQuestion = () => {
-    if(question === "" || answer === ""){
+    if (question === "" || answer === "") {
       alert("請輸入完整的問題與答案!")
       return
     }
@@ -93,6 +105,15 @@ function Labeling() {
     setStartIndex(0);
     setQuestion("");
     setIsFixedAnswer(false);
+
+    saveAnswer();
+  }
+
+  const goToNextTask = (paragraph) => {
+    console.log('max', taskInfo.totalTaskNum)
+    console.log('para', paragraph)
+    saveAnswer();
+    history.push(`/MRC/Label/${articleId}/${parseInt(paragraph) + 1}`);
   }
 
   return (
@@ -107,24 +128,24 @@ function Labeling() {
         </div>
         <div className="justify-start mb-30 body-padding">
           <div className="nowrap mr-10">問題：</div>
-          <textarea className="working-textarea" value={question} onChange={handleTextAreaChange}/>
+          <textarea className="working-textarea" value={question} onChange={handleTextAreaChange} />
         </div>
         <div className="justify-start body-padding">
           <div className="nowrap mr-10">答案：</div>
-          <textarea 
-          className="working-textarea" 
-          value={answer}
-          onChange={()=>{return}}
-          placeholder="請透過滑鼠反白方式選擇文章中的答案"/>
+          <textarea
+            className="working-textarea"
+            value={answer}
+            onChange={() => { return }}
+            placeholder="請透過滑鼠反白方式選擇文章中的答案" />
           <div className={labelButtonCss} onClick={handleAnswerFixed}>{buttonString}</div>
         </div>
         <div className="justify-center">
           <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>
-          {(paragraph <= maxParagraph) ? 
-            (<Link to={`/MRC/Label/${articleId}/${parseInt(paragraph)+1}`}>
+          {(taskId <= taskInfo.totalTaskNum) ?
+            (<div onClick={() => goToNextTask()}>
               <div className="function-button">下一段</div>
-            </Link>):null}
-      </div>
+            </div>) : null}
+        </div>
       </div>
       <div className="question-history-container align-start">
         <div className="justify-center question-title">提問紀錄</div>

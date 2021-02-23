@@ -1,6 +1,6 @@
 import './ParagraphCards.css'
 import { useParams, useRouteMatch, useHistory } from "react-router-dom";
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { BASEURL } from "../config";
 import axios from "axios";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -32,7 +32,7 @@ function ParagraphCards() {
   }, [articleId])
 
   // When api not get responding
-  if(!paragraphs || !paragraphs.length) {
+  if (!paragraphs || !paragraphs.length) {
     return (
       <Loader
         className="center"
@@ -46,11 +46,14 @@ function ParagraphCards() {
   }
 
   const goToLabel = (idx) => {
+    console.log('idx', idx);
+    console.log('paara dta', paragraphs[idx])
     history.push(`${url}/${idx}`);
     const data = {
       articleId: articleId,
       articleTitle: articleTitle,
-      taskId: paragraphs[idx].taskId,
+      taskId: idx,
+      totalTaskNum: paragraphs.length,
       // paragraph: paragraphs[idx]
     }
     sessionStorage.setItem("paragraph", JSON.stringify(data));
@@ -59,7 +62,7 @@ function ParagraphCards() {
   return (
     <div id="Paragraphs" className="center-center">
       <div className="paragraph-title-container justify-start f-20">
-        <div className="line"/>
+        <div className="line" />
         <div className="center-center mb-3">{articleTitle}</div>
       </div>
       <div className="start-start flex-wrap">
@@ -67,7 +70,7 @@ function ParagraphCards() {
           <div key={idx} className="paragraph-link" onClick={() => { goToLabel(idx) }}>
             <div key={idx} className={
               `paragraph-card-container center-center f-16 
-                ${paragraph.isAnswered ? "paragraph-is-labeled" : "" }`
+                ${paragraph.isAnswered ? "paragraph-is-labeled" : ""}`
             }>
               <div className="paragraph-counter center-center mb-20">{paragraph.answered}</div>
               <div>
@@ -76,10 +79,10 @@ function ParagraphCards() {
             </div>
           </div>
         ))}
-        <div 
+        <div
           className={
             `paragraph-card-container center-center f-16 
-              ${isLabeled ? "paragraph-is-labeled" : "" }`
+              ${isLabeled ? "paragraph-is-labeled" : ""}`
           }>
           <div className="paragraph-counter center-center mb-20">0</div>
           <div className="paragraph-content">
