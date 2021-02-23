@@ -18,6 +18,7 @@
 .question-history-container {
   background-color: white;
   width: 25vw;
+  position: relative;
   height: 77vh;
   margin-left: 20px;
   box-shadow: 0px 3px 6px #00000029;
@@ -130,7 +131,12 @@
   background-color: #1FDCA8;
 }
 
-.historyCard {
+.history-card-container {
+  width: 100%;
+}
+
+.history-card {
+  width: 100%;
   border-bottom: 1px solid #d3d3d3;
   padding: 0 5px;
   padding-bottom: 15px;

@@ -151,9 +151,9 @@ function Labeling() {
       </div>
       <div className="question-history-container align-start">
         <div className="justify-center question-title">提問紀錄</div>
-        <div className="overflow-scroll">
+        <div className="overflow-scroll history-card-container">
           {qaPairs ? qaPairs.reverse().map((qaPairs, idx) => (
-            <div key={idx} className="historyCard mb-15">
+            <div key={idx} className="history-card mb-15">
               <div className="mb-5">問：{qaPairs.question}</div>
               <div>答：{qaPairs.answer}</div>
             </div>
