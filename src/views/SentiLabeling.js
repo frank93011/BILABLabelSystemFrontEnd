@@ -30,6 +30,8 @@ function Labeling() {
 
   const [majorAspect, setMajorAspect] = React.useState("");
   const [minorAspect, setMinorAspect] = React.useState({offset:"", text:""});
+  const [sentimentList, setSentimentList] = React.useState([]);
+
   const [aspectButtonCss, setAspectButtonCss] = React.useState({status:0, css:"aspect-label-button"});
   const [sentiButtonCss, setSentiButtonCss] = React.useState({status:0, css:"sentiment-label-button"});
   //[TODO]: change fake data{}
@@ -210,7 +212,7 @@ function Labeling() {
         {/* sentiment labeling*/}
         <div className="justify-start body-padding">
           <div className="nowrap mr-10">標記情緒：</div>
-          <textarea 
+          <div 
           className="senti-working-textarea" 
           value={answer}
           onChange={()=>{return}}
