@@ -31,15 +31,21 @@ function Labeling() {
   const [majorAspect, setMajorAspect] = React.useState("");
   const [minorAspect, setMinorAspect] = React.useState({offset:"", text:""});
   const [sentimentList, setSentimentList] = React.useState([]);
+  const [totalAnswer, setTotalAnswer] = React.useState([]);
 
   const [aspectButtonCss, setAspectButtonCss] = React.useState({status:0, css:"aspect-label-button"});
   const [sentiButtonCss, setSentiButtonCss] = React.useState({status:0, css:"sentiment-label-button"});
+  const [startId, setStartId] = React.useState(0);
   //[TODO]: change fake data{}
   const fakeQuestions = fakeQuestionsHistory;
   const fakePool = fakeAspectPool;
   const maxParagraph = 10;
 
   const classes = useStyles();
+
+  const nullMinor = {offset:"", text:""};
+  const nullSenti = [];
+
 
   const handleDelete = () => {
     console.info('You clicked the delete icon.');
@@ -63,6 +69,20 @@ function Labeling() {
     setMinorAspect({offset:"",text:""})
     // console.info(majorAspect);
   };
+  const deleteSenti = (offset) => {
+    // console.info('delete!!');
+    setSentimentList(sentimentList.filter( item => {
+      return(item.offset !== offset)
+    }))
+    // console.info(majorAspect);
+  };
+  const deleteHistory = (id) => {
+    // console.info('delete!!');
+    setTotalAnswer(totalAnswer.filter( item => {
+      return(item.id !== id)
+    }))
+    // console.info(majorAspect);
+  };
 
   const renderMajor = () => {
     if (majorAspect !== ""){
@@ -74,6 +94,18 @@ function Labeling() {
   const renderMinor = () => {
     if (majorAspect !== "" && minorAspect.text !== ""){
         return(<Chip label={minorAspect.text} onDelete={deleteMinor} variant="outlined"/>)
+    }
+  };
+
+  const renderSenti = () => {
+    if (sentimentList !== []){
+        return(
+        <div className={classes.root}>
+            {sentimentList.map((sentiment_item, idx) => (
+                <Chip label={sentiment_item.text} onDelete={() => deleteSenti(sentiment_item.offset)} variant="outlined"/>
+            ))}
+        </div>
+        )
     }
   };
 
@@ -104,13 +136,17 @@ function Labeling() {
     if (aspectButtonCss.status === 1){
         event.stopPropagation();
         var selObj = window.getSelection();
-        setAnswer(selObj.toString());
         var selRange = selObj.getRangeAt(0);
         setMinorAspect({offset:selRange.startOffset, text:selObj.toString()});
         return;
     }
     else if (sentiButtonCss.status === 1){
-        
+        event.stopPropagation();
+        var selObj = window.getSelection();
+        var selRange = selObj.getRangeAt(0);
+        setSentimentList([...sentimentList, {offset:selRange.startOffset, text:selObj.toString()}]);
+        // console.info(sentimentList)
+        return;
     }
     else{
         return
@@ -120,13 +156,34 @@ function Labeling() {
     if(!isFixedAnswer){
       return;
     }
-    // event.stopPropagation();
-    // var selObj = window.getSelection();
-    // setAnswer(selObj.toString());
-    // var selRange = selObj.getRangeAt(0);
-    // setStartIndex(selRange.startOffset);
-    // return;
   };
+  const resetAnswer = () => {
+    setTotalAnswer([]);
+    setMajorAspect("");
+    setMinorAspect({offset:"", text:""});
+    setSentimentList([]);
+    setAspectButtonCss({status:0, css:"aspect-label-button"});
+    setSentiButtonCss({status:0, css:"sentiment-label-button"});
+    setStartId(0);
+  }
+  const saveOneSet = () => {
+    if((majorAspect !== "") && (minorAspect.offset !== "") && (sentimentList.length !== 0)){
+      setTotalAnswer([...totalAnswer, {id:startId, majorAspect:majorAspect, minorAspect:minorAspect, sentimentList:sentimentList}])
+      setMajorAspect("");
+      setMinorAspect({offset:"", text:""});
+      setSentimentList([]);
+      setAspectButtonCss({status:0, css:"aspect-label-button"});
+      setSentiButtonCss({status:0, css:"sentiment-label-button"});
+      setStartId(startId+1);
+
+      // console.info(totalAnswer);
+    }
+    else{
+      alert("請選取完整的 aspect 與 sentiment 組合，再完成送出！");
+    }
+
+    return;
+  }
 
 
   // textarea to be editable
@@ -136,41 +193,41 @@ function Labeling() {
   }
 
   // handle selection answers fixed
-  const handleAnswerFixed = () => {
-      if(answer === ""){
-        alert("請以反白方式選擇內文再點選完成標註");
-        return
-      }
+  // const handleAnswerFixed = () => {
+  //     if(answer === ""){
+  //       alert("請以反白方式選擇內文再點選完成標註");
+  //       return
+  //     }
 
-      setIsFixedAnswer(!isFixedAnswer)
-      if(isFixedAnswer){
-        setLabelButtonCss("label-button justify-center nowrap light-green")
-        setButtonString("重新標記")
-      }
-      else{
-        setLabelButtonCss("label-button justify-center nowrap")
-        setButtonString("標記答案")
-      }
-    }
+  //     setIsFixedAnswer(!isFixedAnswer)
+  //     if(isFixedAnswer){
+  //       setLabelButtonCss("label-button justify-center nowrap light-green")
+  //       setButtonString("重新標記")
+  //     }
+  //     else{
+  //       setLabelButtonCss("label-button justify-center nowrap")
+  //       setButtonString("標記答案")
+  //     }
+  //   }
   
-  const handleNewQuestion = () => {
-    if(question === "" || answer === ""){
-      alert("請輸入完整的問題與答案!")
-      return
-    }
-    //[TODO]: post data
-    let args = {
-      question: question,
-      answerString: answer,
-      answerStart: startIndex,
-    };
-    console.log(args);
+  // const handleNewQuestion = () => {
+  //   if(question === "" || answer === ""){
+  //     alert("請輸入完整的問題與答案!")
+  //     return
+  //   }
+  //   //[TODO]: post data
+  //   let args = {
+  //     question: question,
+  //     answerString: answer,
+  //     answerStart: startIndex,
+  //   };
+  //   console.log(args);
 
-    // re-init answers and questions
-    setAnswer("");
-    setStartIndex(0);
-    setQuestion("");
-  }
+  //   // re-init answers and questions
+  //   setAnswer("");
+  //   setStartIndex(0);
+  //   setQuestion("");
+  // }
 
   return (
     <div id="Labeling" className="justify-center">
@@ -212,31 +269,50 @@ function Labeling() {
         {/* sentiment labeling*/}
         <div className="justify-start body-padding">
           <div className="nowrap mr-10">標記情緒：</div>
-          <div 
+          {/* <div 
           className="senti-working-textarea" 
           value={answer}
           onChange={()=>{return}}
-          placeholder="請透過滑鼠反白方式選擇文章中的答案"/>
-          <div className={sentiButtonCss.css} onClick={clickChooseSenti}> 劃記情緒 </div>
+          placeholder="請透過滑鼠反白方式選擇文章中的答案"/> */}
+          <div className="senti-working-textarea justify-start">
+            {renderSenti()}
+          </div>
+          <div>
+            <div className={sentiButtonCss.css} onClick={clickChooseSenti}> 劃記情緒詞 </div>
+          </div>
+          
         </div>
+
+        {/* 底部按鈕 */}
         <div className="justify-center">
-          <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>
-          {(paragraph <= maxParagraph) ? 
+          <div className="function-button-senti mr-40" onClick={saveOneSet}>新增 aspect</div>
+          {/* {(paragraph <= maxParagraph) ? 
             (<Link to={`/MRC/Label/${articleTitle}/${parseInt(paragraph)+1}`}>
               <div className="function-button">下一段</div>
-            </Link>):null}
+            </Link>):null} */}
       </div>
       </div>
+
+      {/* 右側資料 */}
       <div className="question-history-container align-start">
         <div className="justify-center question-title">提問紀錄</div>
         <div className="overflow-scroll">
-          {fakeQuestions.map((fakeQuestion, idx) => (
-            <div key={idx} className="mb-15">
-              <div className="mb-5">問：{fakeQuestion.question}</div>
-              <div>答：{fakeQuestion.answer}</div>
+          {totalAnswer.map((answerItem, idx) => (
+            <div key={idx} onClick={() => deleteHistory(answerItem.id)} className="mb-15 single-aspect-block">
+              <li> [{answerItem.majorAspect}]：{answerItem.minorAspect.text}</li>
+              <ol>
+                {answerItem.sentimentList.map((sentiment, idx) => (
+                  <li>{sentiment.text}</li>  
+                ))}
+              </ol>
+              
             </div>
           ))}
         </div>
+        {(paragraph <= maxParagraph) ? 
+            (<Link to={`/MRC/Label/${articleTitle}/${parseInt(paragraph)+1}`}>
+              <div onClick = {() => resetAnswer()} className="finish-button">標註完成，前往下一段</div>
+            </Link>):null}
       </div>
     </div>
   )
