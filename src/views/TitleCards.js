@@ -5,28 +5,30 @@ import { BASEURL } from "../config";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import { fakeSentimentalTitles } from './fakeData'
+import { useSelector} from 'react-redux';
 
 function TitleCards(props) {
   let { path } = useRouteMatch();
   const [articles, setArticles] = useState();
+  const profileObj = useSelector(state => state.profileObj);
 
   useEffect(() => {
+    const getArticles = async() => {
+      let actionURL = BASEURL + '/articles'
+      let arg = {
+        "userId": profileObj.googleId,
+      }
+      const response = await axios.post(actionURL, arg)
+      setArticles(response.data);
+  
+    }
+
     if (!props.type || props.type === "MRC") {
       getArticles();
     } else {
       setArticles(fakeSentimentalTitles)
     }
-  }, [props.type]);
-
-  const getArticles = async() => {
-    let actionURL = BASEURL + '/articles'
-    let arg = {
-      "userId": "0",
-    }
-    const response = await axios.post(actionURL, arg)
-    setArticles(response.data);
-
-  }
+  }, [props.type, profileObj.googleId]);
 
   // When api not get responding
   if(!articles || !articles.length) {

@@ -5,6 +5,7 @@ import { BASEURL } from "../config";
 import axios from "axios";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import { useSelector} from 'react-redux';
 
 function ParagraphCards() {
   let history = useHistory();
@@ -13,12 +14,13 @@ function ParagraphCards() {
   const [articleTitle, setArticleTitle] = useState();
   const [paragraphs, setParagraphs] = useState();
   let isLabeled = true;
+  const profileObj = useSelector(state => state.profileObj);
 
   useEffect(() => {
     const getSetParagraphs = async () => {
       let actionURL = BASEURL + '/tasks'
       let arg = {
-        "userId": "0",
+        "userId": profileObj.googleId,
         "taskType": "MRC",
         "articleId": articleId
       }
@@ -29,7 +31,7 @@ function ParagraphCards() {
       // setqaList(response.data.qaList)
     }
     getSetParagraphs();
-  }, [articleId])
+  }, [articleId, profileObj.googleId])
 
   // When api not get responding
   if (!paragraphs || !paragraphs.length) {

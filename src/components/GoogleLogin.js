@@ -48,10 +48,10 @@ function SocialLogin() {
             name: profileObj.name,
             accessToken: accessToken,
             email: profileObj.email,
-            familyName: profileObj.FamilyName,
-            givenName: profileObj.GivenName,
+            familyName: profileObj.familyName,
+            givenName: profileObj.givenName,
             imageUrl: profileObj.imageUrl,
-            googleId: profileObj.googleId
+            userId: profileObj.googleId
         }
         const res = await axios.post(`${BASEURL}/login`, arg);
         console.log('googleLogin: googleLogin api', res);

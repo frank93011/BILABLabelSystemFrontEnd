@@ -6,8 +6,7 @@ import {
   Link,
   useRouteMatch
 } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch} from 'react-redux';
 
 function Header() {
   let { url } = useRouteMatch();

@@ -3,6 +3,7 @@ import './Labeling.css'
 import { useEffect, useState } from 'react';
 import { BASEURL } from "../config";
 import axios from 'axios';
+import { useSelector} from 'react-redux';
 
 function Labeling() {
   let history = useHistory();
@@ -17,6 +18,7 @@ function Labeling() {
   const taskInfo = JSON.parse(sessionStorage.getItem('paragraph'));
   const [task, setTask] = useState();
   const [qaPairs, setQaPairs] = useState();
+  const profileObj = useSelector(state => state.profileObj);
 
   useEffect(() => {
     const getTask = async () => {
@@ -24,16 +26,16 @@ function Labeling() {
         articleId: articleId,
         taskId: taskId.toString(),
         taskType: "MRC",
-        userId: ""
+        userId: profileObj.googleId
       }
       const res = await axios.post(`${BASEURL}/getTask`, arg);
       console.log('labeling: getTask api', res);
       setTask(res.data);
-      const reversedQa = res.data.qaList.reverse()
+      const reversedQa = res.data.qaList ? res.data.qaList.reverse() : []
       setQaPairs(reversedQa);
     }
     getTask();
-  }, [articleId, taskInfo.taskId, taskId])
+  }, [articleId, taskInfo.taskId, taskId, profileObj.googleId])
 
   // useEffect(() => {
   //   if (isFixedAnswer) {
@@ -78,7 +80,7 @@ function Labeling() {
 
   const saveAnswer = async () => {
     let newAnswer = {
-      userId: "0",
+      userId: profileObj.googleId,
       articleId: articleId,
       taskId: taskInfo.taskId.toString(),
       taskType: 'MRC',
@@ -143,7 +145,7 @@ function Labeling() {
         <div className="justify-center">
         {(question && answer) && 
           <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>}
-          {(taskId <= taskInfo.totalTaskNum-1) &&
+          {(taskId < taskInfo.totalTaskNum-1) &&
             <div onClick={() => goToNextTask()}>
               <div className="function-button">下一段</div>
             </div>}
