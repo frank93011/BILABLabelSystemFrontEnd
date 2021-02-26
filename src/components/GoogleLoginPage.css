@@ -1,0 +1,44 @@
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.center-box {
+    position: absolute;
+    left: 40%;
+    top: 20%;
+    width: 350px;
+    height: 350px;
+    background-color: #ffffff;
+    border-radius: 30px;
+  }
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+.title {
+    font-family: 'Calibri', Poppins, sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: #6184C6;
+}
+
+.logo-container {
+    width: 150px;
+    height: 150px;
+}
+
+.mt-12 {
+    margin-top: 12px;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mt-30 {
+    margin-top: 30px;
+}
