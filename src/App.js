@@ -1,5 +1,7 @@
 import './App.css';
 import MainContentPage from './views/MainContentPage'
+import SocialLogin from './components/GoogleLogin';
+import { useSelector } from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,17 +10,32 @@ import {
 } from "react-router-dom";
 
 function App() {
-  return (
-    <Router>
+  // using redux state to watch for changes
+  const accessToken = useSelector(state => state.accessToken);
+  
+  // if already logged in
+  if(accessToken){
+    return (
+      <Router>
+        <div className="App">
+          <Switch>
+            <Route path="/MRC" component={MainContentPage} />
+            <Route path="/Sentimental" render={() => <MainContentPage type="Sentimental" />} />
+            <Redirect from="/" to="/MRC" />
+          </Switch>
+        </div> 
+      </Router>
+    )
+  }
+  else{
+    return(
+      // login page
       <div className="App">
-        <Switch>
-          <Route path="/MRC" component={MainContentPage} />
-          <Route path="/Sentimental" render={() => <MainContentPage type="Sentimental" />} />
-          <Redirect from="/" to="/MRC" />
-        </Switch>
-      </div>   
-    </Router>
-  )
+        <SocialLogin/>
+      </div>
+    )
+  }
+
 }
 
 export default App;
