@@ -3,6 +3,7 @@ import '../components/_global.css'
 import Header from '../components/Header'
 import TitleCards from './TitleCards'
 import ParagraphCards from './ParagraphCards'
+// import Labeling from './Labeling'
 import Labeling from './SentiLabeling'
 import Validation from './ValidationPage' // temp
 import React, { useState, useEffect } from 'react';

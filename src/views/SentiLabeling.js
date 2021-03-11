@@ -2,7 +2,7 @@ import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import './SentiLabeling.css'
 import { fakeQuestionsHistory } from './fakeData'
 import { fakeAspectPool } from './fakeData'
-import React from 'react';
+import {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Chip from '@material-ui/core/Chip';
 
@@ -17,34 +17,25 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function Labeling() {
+function SentiLabeling() {
   let history = useHistory();
   let { params } = useRouteMatch();
   let {articleTitle, paragraph} = params;
-  const [question, setQuestion] = React.useState("");
-  const [answer, setAnswer] = React.useState("");
-  const [startIndex, setStartIndex] = React.useState(0);
-  const [isFixedAnswer, setIsFixedAnswer] = React.useState(true);
-  const [labelButtonCss, setLabelButtonCss] = React.useState("label-button justify-center nowrap");
-  const [buttonString, setButtonString] = React.useState("標記答案");
+  const [isFixedAnswer, setIsFixedAnswer] = useState(true);
 
-  const [majorAspect, setMajorAspect] = React.useState("");
-  const [minorAspect, setMinorAspect] = React.useState({offset:"", text:""});
-  const [sentimentList, setSentimentList] = React.useState([]);
-  const [totalAnswer, setTotalAnswer] = React.useState([]);
+  const [majorAspect, setMajorAspect] = useState("");
+  const [minorAspect, setMinorAspect] = useState({offset:"", text:""});
+  const [sentimentList, setSentimentList] = useState([]);
+  const [totalAnswer, setTotalAnswer] = useState([]);
 
-  const [aspectButtonCss, setAspectButtonCss] = React.useState({status:0, css:"aspect-label-button"});
-  const [sentiButtonCss, setSentiButtonCss] = React.useState({status:0, css:"sentiment-label-button"});
-  const [startId, setStartId] = React.useState(0);
-  //[TODO]: change fake data{}
-  const fakeQuestions = fakeQuestionsHistory;
+  const [aspectButtonCss, setAspectButtonCss] = useState({status:0, css:"aspect-label-button"});
+  const [sentiButtonCss, setSentiButtonCss] = useState({status:0, css:"sentiment-label-button"});
+  const [startId, setStartId] = useState(0);
+
   const fakePool = fakeAspectPool;
   const maxParagraph = 10;
 
   const classes = useStyles();
-
-  const nullMinor = {offset:"", text:""};
-  const nullSenti = [];
 
 
   const handleDelete = () => {
@@ -187,10 +178,6 @@ function Labeling() {
 
 
   // textarea to be editable
-  const handleTextAreaChange = event => {
-    setQuestion(event.target.value);
-    return;
-  }
 
   // handle selection answers fixed
   // const handleAnswerFixed = () => {
@@ -230,11 +217,11 @@ function Labeling() {
   // }
 
   return (
-    <div id="Labeling" className="justify-center">
-      <div className="working-area-container overflow-scroll">
-        <div className="back-button" onClick={() => history.push(`/MRC/Label/${articleTitle}`)}>〈 回上一層 </div>
-        <div className="working-article-title body-padding">我要重寫 sentiment 的頁面囉</div>
-        <div className="working-article-content body-padding" onMouseUp={mouseUpHandler}>健康老化有不少成功範例，例如被稱為「最帥大爺」的王德順，出生於1936年，
+    <div id="SentiLabeling" className="justify-center">
+      <div className="senti-working-area-container overflow-scroll">
+        <div className="senti-back-button" onClick={() => history.push(`/MRC/Label/${articleTitle}`)}>〈 回上一層 </div>
+        <div className="senti-working-article-title body-padding">我要重寫 sentiment 的頁面囉</div>
+        <div className="senti-working-article-content body-padding" onMouseUp={mouseUpHandler}>健康老化有不少成功範例，例如被稱為「最帥大爺」的王德順，出生於1936年，
           理應是一位八旬長者，但他完全顛覆傳統對於八旬老翁的形象，有個性的白髮與歷經風霜的堅毅表情，
           還有讓許多中年男子羨慕的好身材——精壯的身形與肌肉，這是他自五十歲開始持續的健身成果。
           並不是每個人都必須仿效他的生活，而是他完全顛覆一個八十歲長者的生活樣貌，
@@ -294,8 +281,8 @@ function Labeling() {
       </div>
 
       {/* 右側資料 */}
-      <div className="question-history-container align-start">
-        <div className="justify-center question-title">提問紀錄</div>
+      <div className="senti-question-history-container align-start">
+        <div className="justify-center senti-question-title">提問紀錄</div>
         <div className="overflow-scroll">
           {totalAnswer.map((answerItem, idx) => (
             <div key={idx} onClick={() => deleteHistory(answerItem.id)} className="mb-15 single-aspect-block">
@@ -318,4 +305,4 @@ function Labeling() {
   )
 }
 
-export default Labeling;
+export default SentiLabeling;
