@@ -3,7 +3,8 @@ import '../components/_global.css'
 import Header from '../components/Header'
 import TitleCards from './TitleCards'
 import ParagraphCards from './ParagraphCards'
-import Labeling from './Labeling'
+// import Labeling from './Labeling'
+import Labeling from './SentiLabeling'
 import Validation from './ValidationPage' // temp
 import React from 'react';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
