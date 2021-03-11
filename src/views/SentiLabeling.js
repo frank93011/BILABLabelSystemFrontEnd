@@ -37,15 +37,6 @@ function SentiLabeling() {
 
   const classes = useStyles();
 
-
-  const handleDelete = () => {
-    console.info('You clicked the delete icon.');
-  };
-
-  const handleClick = () => {
-    console.info('You clicked the Chip.');
-  };
-
   const chooseMajor = (major) => {
     setMajorAspect(major)
     // console.info(majorAspect);
