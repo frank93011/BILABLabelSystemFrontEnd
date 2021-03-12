@@ -8,7 +8,7 @@ import { useSelector} from 'react-redux';
 function Labeling() {
   let history = useHistory();
   let { params } = useRouteMatch();
-  let { articleId, taskId } = params;
+  let { articleId, idx } = params;
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [startIndex, setStartIndex] = useState(0);
@@ -22,12 +22,15 @@ function Labeling() {
 
   useEffect(() => {
     const getTask = async () => {
+      let idNo = articleId.replace("articleId", "")
+      let taskId = "taskId"+idNo+"-"+idx
       const arg = {
         articleId: articleId,
-        taskId: taskId.toString(),
+        taskId: taskId,
         taskType: "MRC",
         userId: profileObj.googleId
       }
+      console.log("getTask arg", arg)
       const res = await axios.post(`${BASEURL}/getTask`, arg);
       console.log('labeling: getTask api', res);
       setTask(res.data);
@@ -35,7 +38,7 @@ function Labeling() {
       setQaPairs(reversedQa);
     }
     getTask();
-  }, [articleId, taskInfo.taskId, taskId, profileObj.googleId])
+  }, [articleId, idx, profileObj.googleId])
 
   // useEffect(() => {
   //   if (isFixedAnswer) {
@@ -116,7 +119,7 @@ function Labeling() {
 
   const goToNextTask = () => {
     handleNewQuestion()
-    history.push(`/MRC/Label/${articleId}/${parseInt(taskId) + 1}`);
+    history.push(`/MRC/Label/${articleId}/${parseInt(idx) + 1}`);
   }
 
   return (
@@ -145,7 +148,7 @@ function Labeling() {
         <div className="justify-center">
         {(question && answer) && 
           <div className="function-button mr-40" onClick={handleNewQuestion}>新增題目</div>}
-          {(taskId < taskInfo.totalTaskNum-1) &&
+          {(idx < taskInfo.totalTaskNum-1) &&
             <div onClick={() => goToNextTask()}>
               <div className="function-button">下一段</div>
             </div>}
