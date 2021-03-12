@@ -47,12 +47,13 @@ function ParagraphCards() {
     );
   }
 
-  const goToLabel = (idx) => {
+  const goToLabel = (taskId) => {
+    let idx = taskId.split('-')[1]
     history.push(`${url}/${idx}`);
     const data = {
       articleId: articleId,
       articleTitle: articleTitle,
-      taskId: idx,
+      taskId: taskId,
       totalTaskNum: paragraphs.length,
       // paragraph: paragraphs[idx]
     }
@@ -67,14 +68,14 @@ function ParagraphCards() {
       </div>
       <div className="start-start flex-wrap">
         {paragraphs.map((paragraph, idx) => (
-          <div key={idx} className="paragraph-link" onClick={() => { goToLabel(idx) }}>
+          <div key={idx} className="paragraph-link" onClick={() => { goToLabel(paragraph.taskId) }}>
             <div key={idx} className={
               `paragraph-card-container center-center f-16 
                 ${paragraph.isAnswered ? "paragraph-is-labeled" : ""}`
             }>
               <div className="paragraph-counter center-center mb-20">{paragraph.answered}</div>
               <div>
-                {paragraph.context}
+                {paragraph.taskTitle}
               </div>
             </div>
           </div>
