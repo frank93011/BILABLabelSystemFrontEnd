@@ -47,6 +47,29 @@ function SentiLabeling() {
     // console.info(majorAspect);
   };
 
+  const changeDir = (offset) => {
+    const newList = sentimentList.map((sentiment_item, idx) => {
+      if (sentiment_item.offset === offset) {
+        if(sentiment_item.dir === '+'){
+          const updatedItem = {
+            ...sentiment_item,
+            dir: '-',
+          };
+          return updatedItem;
+        }
+        else if(sentiment_item.dir === '-'){
+          const updatedItem = {
+            ...sentiment_item,
+            dir: '+',
+          };
+          return updatedItem;
+        }
+        return sentiment_item;
+      }
+      
+    });
+    setSentimentList(newList)
+  }
   const deleteMinor = () => {
     setMinorAspect({offset:"",text:""})
     // console.info(majorAspect);
@@ -83,9 +106,17 @@ function SentiLabeling() {
     if (sentimentList !== []){
         return(
         <div className={classes.root}>
-            {sentimentList.map((sentiment_item, idx) => (
-                <Chip label={sentiment_item.text} onDelete={() => deleteSenti(sentiment_item.offset)} variant="outlined"/>
-            ))}
+            {sentimentList.map((sentiment_item, idx) => {
+              if(sentiment_item.dir === '+'){
+                return(<Chip label={sentiment_item.text + ' [' + sentiment_item.dir+ ']'} color="primary" onClick={() => changeDir(sentiment_item.offset)} onDelete={() => deleteSenti(sentiment_item.offset)} variant="outlined"/>)
+              }
+              else if(sentiment_item.dir === '-'){
+                return(<Chip label={sentiment_item.text + ' [' + sentiment_item.dir+ ']'} color="secondary" onClick={() => changeDir(sentiment_item.offset)} onDelete={() => deleteSenti(sentiment_item.offset)} variant="outlined"/>)
+              }
+              
+            }
+                
+            )}
         </div>
         )
     }
@@ -126,17 +157,12 @@ function SentiLabeling() {
         event.stopPropagation();
         var selObj = window.getSelection();
         var selRange = selObj.getRangeAt(0);
-        setSentimentList([...sentimentList, {offset:selRange.startOffset, text:selObj.toString()}]);
+        setSentimentList([...sentimentList, {offset:selRange.startOffset, text:selObj.toString(), dir:'+'}]);
         // console.info(sentimentList)
         return;
     }
     else{
         return
-    }
-
-
-    if(!isFixedAnswer){
-      return;
     }
   };
   const resetAnswer = () => {
@@ -220,7 +246,7 @@ function SentiLabeling() {
         
         {/* aspectPool */}
         <div className="justify-start mb-30 body-padding">
-            <div className="pool-title justify-start" > 選擇想要標註的主題 Aspect： </div>
+            <div className="pool-title justify-start" > 選擇想要標註的 Aspect Group： </div>
         </div>
         <div className={classes.root}>
             {fakePool.map((majorAspect, idx) => (
@@ -231,7 +257,7 @@ function SentiLabeling() {
         
         {/* majorAspect and minorAspect*/}
         <div className="justify-start mb-30 body-padding">
-            <div className="nowrap mr-10">標記主詞：</div>
+            <div className="nowrap mr-10">標註 Aspect：</div>
                     
             <div className="senti-working-textarea justify-start">
                 {renderMajor()}
@@ -246,7 +272,7 @@ function SentiLabeling() {
         
         {/* sentiment labeling*/}
         <div className="justify-start body-padding">
-          <div className="nowrap mr-10">標記情緒：</div>
+          <div className="nowrap mr-10">標記 Sentiment：</div>
           {/* <div 
           className="senti-working-textarea" 
           value={answer}
@@ -280,7 +306,7 @@ function SentiLabeling() {
               <li> [{answerItem.majorAspect}]：{answerItem.minorAspect.text}</li>
               <ol>
                 {answerItem.sentimentList.map((sentiment, idx) => (
-                  <li>{sentiment.text}</li>  
+                  <li>{sentiment.text+' ['+sentiment.dir+']'}</li>  
                 ))}
               </ol>
               
