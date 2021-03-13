@@ -3,8 +3,8 @@ import '../components/_global.css'
 import Header from '../components/Header'
 import TitleCards from './TitleCards'
 import ParagraphCards from './ParagraphCards'
-// import Labeling from './Labeling'
-import Labeling from './SentiLabeling'
+import MRCLabel from './Labeling'
+import SentimentalLabel from './SentiLabeling'
 import Validation from './ValidationPage' // temp
 import React from 'react';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -17,13 +17,17 @@ import {
 
 function MainContent(props) {
   let { path } = useRouteMatch();
+  console.log('path', path)
 
   return (
     <div id="MainContent">
       <Header />
       <Switch>
         <Route path={`${path}/Label/:articleId/:idx`}>
-          <Labeling />
+          { path === '/MRC' 
+            ? <MRCLabel />
+            : <SentimentalLabel />
+          }
         </Route>
         <Route path={`${path}/Label/:articleId`}>
           <ParagraphCards />
