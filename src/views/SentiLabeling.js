@@ -66,7 +66,7 @@ function SentiLabeling() {
           // console.info(updatedItem)
           return updatedItem;
         }
-        console.info(sentiment_item)
+        // console.info(sentiment_item)
         
       }
       return sentiment_item;
