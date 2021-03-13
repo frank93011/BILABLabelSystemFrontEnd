@@ -55,6 +55,7 @@ function SentiLabeling() {
             ...sentiment_item,
             dir: '-',
           };
+          
           return updatedItem;
         }
         else if(sentiment_item.dir === '-'){
@@ -62,12 +63,16 @@ function SentiLabeling() {
             ...sentiment_item,
             dir: '+',
           };
+          // console.info(updatedItem)
           return updatedItem;
         }
-        return sentiment_item;
+        console.info(sentiment_item)
+        
       }
-      
+      return sentiment_item;
+      // console.info(sentimentList)
     });
+    console.info(newList)
     setSentimentList(newList)
   }
   const deleteMinor = () => {
@@ -104,6 +109,7 @@ function SentiLabeling() {
 
   const renderSenti = () => {
     if (sentimentList !== []){
+        // console.info(sentimentList)
         return(
         <div className={classes.root}>
             {sentimentList.map((sentiment_item, idx) => {
