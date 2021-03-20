@@ -5,7 +5,7 @@ import TitleCards from './TitleCards'
 import ParagraphCards from './ParagraphCards'
 import MRCLabel from './Labeling'
 import SentimentalLabel from './SentiLabeling'
-import Validation from './ValidationPage' // temp
+import MRCValidation from './ValidationPage' // temp
 import React from 'react';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import {
@@ -35,7 +35,7 @@ function MainContent(props) {
         <Route path={`${path}/Label`}>
           <TitleCards type={props.type} />
         </Route>
-        <Route path={`${path}/Validation`} component={Validation} />
+        <Route path={`${path}/Validation`} component={MRCValidation} />
         <Redirect from={path} to={`${path}/Label`} />
       </Switch>
     </div>
