@@ -1,6 +1,5 @@
 import { Link, useRouteMatch, useHistory } from "react-router-dom";
 import './SentiLabeling.css'
-import { fakeQuestionsHistory } from './fakeData'
 import { fakeAspectPool } from './fakeData'
 import {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,7 +20,6 @@ function SentiLabeling() {
   let history = useHistory();
   let { params } = useRouteMatch();
   let {articleTitle, paragraph} = params;
-  const [isFixedAnswer, setIsFixedAnswer] = useState(true);
 
   const [majorAspect, setMajorAspect] = useState("");
   const [minorAspect, setMinorAspect] = useState({offset:"", text:""});
